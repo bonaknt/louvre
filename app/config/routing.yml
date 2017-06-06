@@ -1,0 +1,4 @@
+mk_louvre:
+    resource: "@MKLouvreBundle/Resources/config/routing.yml"
+    prefix:   /
+
