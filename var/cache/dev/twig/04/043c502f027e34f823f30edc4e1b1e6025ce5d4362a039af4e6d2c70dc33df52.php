@@ -18,119 +18,50 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_0f549cc67bbd9a83b6bc8d5478da1f0e5b3cf4061ad5b4707a220ab29fc795c8 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_0f549cc67bbd9a83b6bc8d5478da1f0e5b3cf4061ad5b4707a220ab29fc795c8->enter($__internal_0f549cc67bbd9a83b6bc8d5478da1f0e5b3cf4061ad5b4707a220ab29fc795c8_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle::layout.html.twig"));
+        $__internal_173c1cc72507e50f86c23174ee97d626846a72b21c8fbaf6d4b761919bf027c3 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_173c1cc72507e50f86c23174ee97d626846a72b21c8fbaf6d4b761919bf027c3->enter($__internal_173c1cc72507e50f86c23174ee97d626846a72b21c8fbaf6d4b761919bf027c3_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle::layout.html.twig"));
 
-        $__internal_73fbf61a70907896713a8bb274c8ba302fbc0c5ea3af3144c251e339e5d5b8d4 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_73fbf61a70907896713a8bb274c8ba302fbc0c5ea3af3144c251e339e5d5b8d4->enter($__internal_73fbf61a70907896713a8bb274c8ba302fbc0c5ea3af3144c251e339e5d5b8d4_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle::layout.html.twig"));
+        $__internal_f7bcc64b722ac8378a182fcd472896bdea712bb575c184bea20fc70e04281aa6 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_f7bcc64b722ac8378a182fcd472896bdea712bb575c184bea20fc70e04281aa6->enter($__internal_f7bcc64b722ac8378a182fcd472896bdea712bb575c184bea20fc70e04281aa6_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle::layout.html.twig"));
 
-        // line 2
-        echo "
-<!DOCTYPE html>
+        // line 1
+        echo "<!DOCTYPE html>
 <html>
   <head>
     <meta charset=\"utf-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 
     <title>";
-        // line 9
+        // line 7
         $this->displayBlock('title', $context, $blocks);
         echo "</title>
 
     ";
-        // line 11
+        // line 9
         $this->displayBlock('stylesheets', $context, $blocks);
-        // line 15
+        // line 13
         echo "
 
-    <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">
-  <link rel=\"stylesheet\" href=\"/resources/demos/style.css\">
-  <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>
-  <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
-  <script src=\"i18n/datepicker-ar.js\"></script>
-  <script src=\"i18n/datepicker-fr.js\"></script>
-  <script src=\"i18n/datepicker-he.js\"></script>
-  <script src=\"i18n/datepicker-zh-TW.js\"></script>
-      <script>
-    \$( function() {
-
-    \$.datepicker.regional['fr'] = {
-    closeText: 'Fermer',
-    prevText: '&#x3c;Préc',
-    nextText: 'Suiv&#x3e;',
-    currentText: 'Aujourd\\'hui',
-    monthNames: ['Janvier','Fevrier','Mars','Avril','Mai','Juin',
-    'Juillet','Aout','Septembre','Octobre','Novembre','Decembre'],
-    monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun',
-    'Jul','Aou','Sep','Oct','Nov','Dec'],
-    dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-    dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
-    dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
-    weekHeader: 'Sm',
-    dateFormat: 'dd/mm/yy',
-    firstDay: 1,
-    isRTL: false,
-    showMonthAfterYear: false,
-    yearSuffix: '',
-    numberOfMonths: 1,
-    showButtonPanel: true
-    };
-    \$.datepicker.setDefaults(\$.datepicker.regional['fr']);
-        //var dateJour = new Date();
-
-
-          
-
-          \$( \".datepicker\" ).datepicker({
-
-          dateFormat: 'yy/mm/dd',
-
-          beforeShowDay: function (date, inst) {
-              var today = new Date();
-
-              today = Date.parse(today.getMonth()+1+'/'+today.getDate()+'/'+today.getFullYear());
-
-              var selDate = Date.parse(date);
-
-              if (date.getDay() == 0 || date.getDay() == 2 || date.getMonth() == 11 && date.getDate() == 25 || date.getMonth() == 10 && date.getDate() == 1 || date.getMonth() == 4 && date.getDate() == 1 || selDate < today) { // La semaine commence à 0 = Dimanche
-                  \$('.datepicker').val('');
-                  \$(inst).datepicker('show');
-                  return [false, ''];
-              } 
-              else {
-                  return [true, ''];
-              }
-
-            }
-        });
-
-        \$( \".datepicker1\").datepicker({
-        dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: \"-100:+0\",
-          beforeShowDay: function (date, inst) {
-              var today = new Date();
-
-              today = Date.parse(today.getMonth()+1+'/'+today.getDate()+'/'+today.getFullYear());
-
-              var selDate = Date.parse(date);
-
-              if (selDate > today) {
-                  \$('.datepicker').val('');
-                  \$(inst).datepicker('show');
-                  return [false, ''];
-              } 
-              else {
-                  return [true, ''];
-              }
-
-            }
-    });
-
-        
-    });
-  </script>
+  <link rel=\"stylesheet\" href=\"";
+        // line 15
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"), "html", null, true);
+        echo "\">
+  <link rel=\"stylesheet\" href=\"";
+        // line 16
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("/resources/demos/style.css"), "html", null, true);
+        echo "\">
+  <script src=\"";
+        // line 17
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("https://code.jquery.com/jquery-1.12.4.js"), "html", null, true);
+        echo "\"></script>
+  <script src=\"";
+        // line 18
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("https://code.jquery.com/ui/1.12.1/jquery-ui.js"), "html", null, true);
+        echo "\"></script>
+  <script src=\"";
+        // line 19
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("i18n/datepicker-fr.js"), "html", null, true);
+        echo "\"></script>
   </head>
 
   <body>
@@ -142,7 +73,7 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
       </p>
       <p>
         <a href=\"";
-        // line 115
+        // line 30
         echo $this->env->getExtension('Symfony\Bridge\Twig\Extension\RoutingExtension')->getPath("mk_louvre_inscription");
         echo "\" class=\"btn btn-primary btn-lg\">Acheter Votre Billet !</a>
       </p>
@@ -153,7 +84,7 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
         <h3>Liens</h3>
         <ul class=\"nav nav-pills nav-stacked\">
           <li><a href=\"";
-        // line 123
+        // line 38
         echo $this->env->getExtension('Symfony\Bridge\Twig\Extension\RoutingExtension')->getPath("mk_louvre_homepage");
         echo "\">Accueil</a></li>
           <li><a href=\"\">Informations pratiques</a></li>
@@ -166,9 +97,9 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
 
         <div id=\"content\" class=\"col-md-9\">
         ";
-        // line 133
+        // line 48
         $this->displayBlock('body', $context, $blocks);
-        // line 135
+        // line 50
         echo "      </div>
 
     </div>
@@ -178,85 +109,84 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
     <hr>
 
     <footer>
-      <p>The sky's the limit © ";
-        // line 144
-        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "Y"), "html", null, true);
-        echo " and beyond.</p>
+      <p>Développé par Mohamed Konaté</p>
     </footer>
   </div>
 
 
 <script src=\"";
-        // line 149
-        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("ajax.js"), "html", null, true);
+        // line 64
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("fichier.js"), "html", null, true);
         echo "\"></script>
   </body>
 </html>
 ";
         
-        $__internal_0f549cc67bbd9a83b6bc8d5478da1f0e5b3cf4061ad5b4707a220ab29fc795c8->leave($__internal_0f549cc67bbd9a83b6bc8d5478da1f0e5b3cf4061ad5b4707a220ab29fc795c8_prof);
+        $__internal_173c1cc72507e50f86c23174ee97d626846a72b21c8fbaf6d4b761919bf027c3->leave($__internal_173c1cc72507e50f86c23174ee97d626846a72b21c8fbaf6d4b761919bf027c3_prof);
 
         
-        $__internal_73fbf61a70907896713a8bb274c8ba302fbc0c5ea3af3144c251e339e5d5b8d4->leave($__internal_73fbf61a70907896713a8bb274c8ba302fbc0c5ea3af3144c251e339e5d5b8d4_prof);
+        $__internal_f7bcc64b722ac8378a182fcd472896bdea712bb575c184bea20fc70e04281aa6->leave($__internal_f7bcc64b722ac8378a182fcd472896bdea712bb575c184bea20fc70e04281aa6_prof);
+
+    }
+
+    // line 7
+    public function block_title($context, array $blocks = array())
+    {
+        $__internal_4cacf46c3fb10e63912d93fbae0ccfda178ee9c01ce8fe668a203a9c85d24ef8 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_4cacf46c3fb10e63912d93fbae0ccfda178ee9c01ce8fe668a203a9c85d24ef8->enter($__internal_4cacf46c3fb10e63912d93fbae0ccfda178ee9c01ce8fe668a203a9c85d24ef8_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
+
+        $__internal_5a833e6e22c7942e2beff95dd8ba4f559f656a69b8367dad471cc61f5efa3f12 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_5a833e6e22c7942e2beff95dd8ba4f559f656a69b8367dad471cc61f5efa3f12->enter($__internal_5a833e6e22c7942e2beff95dd8ba4f559f656a69b8367dad471cc61f5efa3f12_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
+
+        echo "Musée du Louvre";
+        
+        $__internal_5a833e6e22c7942e2beff95dd8ba4f559f656a69b8367dad471cc61f5efa3f12->leave($__internal_5a833e6e22c7942e2beff95dd8ba4f559f656a69b8367dad471cc61f5efa3f12_prof);
+
+        
+        $__internal_4cacf46c3fb10e63912d93fbae0ccfda178ee9c01ce8fe668a203a9c85d24ef8->leave($__internal_4cacf46c3fb10e63912d93fbae0ccfda178ee9c01ce8fe668a203a9c85d24ef8_prof);
 
     }
 
     // line 9
-    public function block_title($context, array $blocks = array())
-    {
-        $__internal_d18bc92cbbfa11c69271f1b601c4893547550fbcab3fdb93a03412c539790219 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_d18bc92cbbfa11c69271f1b601c4893547550fbcab3fdb93a03412c539790219->enter($__internal_d18bc92cbbfa11c69271f1b601c4893547550fbcab3fdb93a03412c539790219_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
-
-        $__internal_3e1d63c55d89df73ed12f6a215ad1fba16c35c58956f5139ad5cd425be311a3f = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_3e1d63c55d89df73ed12f6a215ad1fba16c35c58956f5139ad5cd425be311a3f->enter($__internal_3e1d63c55d89df73ed12f6a215ad1fba16c35c58956f5139ad5cd425be311a3f_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
-
-        echo "Musée du Louvre";
-        
-        $__internal_3e1d63c55d89df73ed12f6a215ad1fba16c35c58956f5139ad5cd425be311a3f->leave($__internal_3e1d63c55d89df73ed12f6a215ad1fba16c35c58956f5139ad5cd425be311a3f_prof);
-
-        
-        $__internal_d18bc92cbbfa11c69271f1b601c4893547550fbcab3fdb93a03412c539790219->leave($__internal_d18bc92cbbfa11c69271f1b601c4893547550fbcab3fdb93a03412c539790219_prof);
-
-    }
-
-    // line 11
     public function block_stylesheets($context, array $blocks = array())
     {
-        $__internal_4f0135d171c6209e0811aa7af028ebe1f0db9e68450794d3ee651f2ebf040f4d = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_4f0135d171c6209e0811aa7af028ebe1f0db9e68450794d3ee651f2ebf040f4d->enter($__internal_4f0135d171c6209e0811aa7af028ebe1f0db9e68450794d3ee651f2ebf040f4d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "stylesheets"));
+        $__internal_5d6679d6d5dfccbc1fac67c95d8ba932cd3dc546154c6c70cda30dbc85416cc9 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_5d6679d6d5dfccbc1fac67c95d8ba932cd3dc546154c6c70cda30dbc85416cc9->enter($__internal_5d6679d6d5dfccbc1fac67c95d8ba932cd3dc546154c6c70cda30dbc85416cc9_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "stylesheets"));
 
-        $__internal_22d7585806d1562edeffee364a0a45c8480ca38cef51d7160ca6777f11721e7a = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_22d7585806d1562edeffee364a0a45c8480ca38cef51d7160ca6777f11721e7a->enter($__internal_22d7585806d1562edeffee364a0a45c8480ca38cef51d7160ca6777f11721e7a_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "stylesheets"));
+        $__internal_b3b7561926392dc3512ef4d8daf11cdc1ea0e94ee2a77ad3ee01b4b752a6ccae = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_b3b7561926392dc3512ef4d8daf11cdc1ea0e94ee2a77ad3ee01b4b752a6ccae->enter($__internal_b3b7561926392dc3512ef4d8daf11cdc1ea0e94ee2a77ad3ee01b4b752a6ccae_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "stylesheets"));
 
-        // line 12
+        // line 10
         echo "      ";
-        // line 13
-        echo "      <link rel=\"stylesheet\" href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css\">
+        // line 11
+        echo "      <link rel=\"stylesheet\" href=\"";
+        echo twig_escape_filter($this->env, $this->env->getExtension('Symfony\Bridge\Twig\Extension\AssetExtension')->getAssetUrl("//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"), "html", null, true);
+        echo "\">
     ";
         
-        $__internal_22d7585806d1562edeffee364a0a45c8480ca38cef51d7160ca6777f11721e7a->leave($__internal_22d7585806d1562edeffee364a0a45c8480ca38cef51d7160ca6777f11721e7a_prof);
+        $__internal_b3b7561926392dc3512ef4d8daf11cdc1ea0e94ee2a77ad3ee01b4b752a6ccae->leave($__internal_b3b7561926392dc3512ef4d8daf11cdc1ea0e94ee2a77ad3ee01b4b752a6ccae_prof);
 
         
-        $__internal_4f0135d171c6209e0811aa7af028ebe1f0db9e68450794d3ee651f2ebf040f4d->leave($__internal_4f0135d171c6209e0811aa7af028ebe1f0db9e68450794d3ee651f2ebf040f4d_prof);
+        $__internal_5d6679d6d5dfccbc1fac67c95d8ba932cd3dc546154c6c70cda30dbc85416cc9->leave($__internal_5d6679d6d5dfccbc1fac67c95d8ba932cd3dc546154c6c70cda30dbc85416cc9_prof);
 
     }
 
-    // line 133
+    // line 48
     public function block_body($context, array $blocks = array())
     {
-        $__internal_5b99cf85d93bb361c50ffb4beb433a42c75d1c116e2d926e5ef8798af6cb87eb = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_5b99cf85d93bb361c50ffb4beb433a42c75d1c116e2d926e5ef8798af6cb87eb->enter($__internal_5b99cf85d93bb361c50ffb4beb433a42c75d1c116e2d926e5ef8798af6cb87eb_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_7ed97c18d3df3f9a84f16ff8558abd9629371e794ea4614f93126d78c15a9ab9 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_7ed97c18d3df3f9a84f16ff8558abd9629371e794ea4614f93126d78c15a9ab9->enter($__internal_7ed97c18d3df3f9a84f16ff8558abd9629371e794ea4614f93126d78c15a9ab9_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
-        $__internal_aec7c7d9b07c612cd4e22f3f8166cc0e47b5ad8a9e9b56993cc3cc07836685d0 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_aec7c7d9b07c612cd4e22f3f8166cc0e47b5ad8a9e9b56993cc3cc07836685d0->enter($__internal_aec7c7d9b07c612cd4e22f3f8166cc0e47b5ad8a9e9b56993cc3cc07836685d0_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_091ea72cbc1a6042890c2a23e20e0ece9f3813e41a35127173673e2d10054d4a = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_091ea72cbc1a6042890c2a23e20e0ece9f3813e41a35127173673e2d10054d4a->enter($__internal_091ea72cbc1a6042890c2a23e20e0ece9f3813e41a35127173673e2d10054d4a_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
-        // line 134
+        // line 49
         echo "        ";
         
-        $__internal_aec7c7d9b07c612cd4e22f3f8166cc0e47b5ad8a9e9b56993cc3cc07836685d0->leave($__internal_aec7c7d9b07c612cd4e22f3f8166cc0e47b5ad8a9e9b56993cc3cc07836685d0_prof);
+        $__internal_091ea72cbc1a6042890c2a23e20e0ece9f3813e41a35127173673e2d10054d4a->leave($__internal_091ea72cbc1a6042890c2a23e20e0ece9f3813e41a35127173673e2d10054d4a_prof);
 
         
-        $__internal_5b99cf85d93bb361c50ffb4beb433a42c75d1c116e2d926e5ef8798af6cb87eb->leave($__internal_5b99cf85d93bb361c50ffb4beb433a42c75d1c116e2d926e5ef8798af6cb87eb_prof);
+        $__internal_7ed97c18d3df3f9a84f16ff8558abd9629371e794ea4614f93126d78c15a9ab9->leave($__internal_7ed97c18d3df3f9a84f16ff8558abd9629371e794ea4614f93126d78c15a9ab9_prof);
 
     }
 
@@ -272,7 +202,7 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
 
     public function getDebugInfo()
     {
-        return array (  254 => 134,  245 => 133,  234 => 13,  232 => 12,  223 => 11,  205 => 9,  191 => 149,  183 => 144,  172 => 135,  170 => 133,  157 => 123,  146 => 115,  44 => 15,  42 => 11,  37 => 9,  28 => 2,);
+        return array (  184 => 49,  175 => 48,  162 => 11,  160 => 10,  151 => 9,  133 => 7,  119 => 64,  103 => 50,  101 => 48,  88 => 38,  77 => 30,  63 => 19,  59 => 18,  55 => 17,  51 => 16,  47 => 15,  43 => 13,  41 => 9,  36 => 7,  28 => 1,);
     }
 
     /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */
@@ -285,9 +215,7 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
 
     public function getSourceContext()
     {
-        return new Twig_Source("{# src/OC/CoreBundle/Resources/views/layout.html.twig #}
-
-<!DOCTYPE html>
+        return new Twig_Source("<!DOCTYPE html>
 <html>
   <head>
     <meta charset=\"utf-8\">
@@ -297,98 +225,15 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
 
     {% block stylesheets %}
       {# On charge le CSS de bootstrap depuis le site directement #}
-      <link rel=\"stylesheet\" href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css\">
+      <link rel=\"stylesheet\" href=\"{{ asset ('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css') }}\">
     {% endblock %}
 
 
-    <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css\">
-  <link rel=\"stylesheet\" href=\"/resources/demos/style.css\">
-  <script src=\"https://code.jquery.com/jquery-1.12.4.js\"></script>
-  <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
-  <script src=\"i18n/datepicker-ar.js\"></script>
-  <script src=\"i18n/datepicker-fr.js\"></script>
-  <script src=\"i18n/datepicker-he.js\"></script>
-  <script src=\"i18n/datepicker-zh-TW.js\"></script>
-      <script>
-    \$( function() {
-
-    \$.datepicker.regional['fr'] = {
-    closeText: 'Fermer',
-    prevText: '&#x3c;Préc',
-    nextText: 'Suiv&#x3e;',
-    currentText: 'Aujourd\\'hui',
-    monthNames: ['Janvier','Fevrier','Mars','Avril','Mai','Juin',
-    'Juillet','Aout','Septembre','Octobre','Novembre','Decembre'],
-    monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Jun',
-    'Jul','Aou','Sep','Oct','Nov','Dec'],
-    dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-    dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
-    dayNamesMin: ['Di','Lu','Ma','Me','Je','Ve','Sa'],
-    weekHeader: 'Sm',
-    dateFormat: 'dd/mm/yy',
-    firstDay: 1,
-    isRTL: false,
-    showMonthAfterYear: false,
-    yearSuffix: '',
-    numberOfMonths: 1,
-    showButtonPanel: true
-    };
-    \$.datepicker.setDefaults(\$.datepicker.regional['fr']);
-        //var dateJour = new Date();
-
-
-          
-
-          \$( \".datepicker\" ).datepicker({
-
-          dateFormat: 'yy/mm/dd',
-
-          beforeShowDay: function (date, inst) {
-              var today = new Date();
-
-              today = Date.parse(today.getMonth()+1+'/'+today.getDate()+'/'+today.getFullYear());
-
-              var selDate = Date.parse(date);
-
-              if (date.getDay() == 0 || date.getDay() == 2 || date.getMonth() == 11 && date.getDate() == 25 || date.getMonth() == 10 && date.getDate() == 1 || date.getMonth() == 4 && date.getDate() == 1 || selDate < today) { // La semaine commence à 0 = Dimanche
-                  \$('.datepicker').val('');
-                  \$(inst).datepicker('show');
-                  return [false, ''];
-              } 
-              else {
-                  return [true, ''];
-              }
-
-            }
-        });
-
-        \$( \".datepicker1\").datepicker({
-        dateFormat: 'yy/mm/dd',
-      changeMonth: true,
-      changeYear: true,
-      yearRange: \"-100:+0\",
-          beforeShowDay: function (date, inst) {
-              var today = new Date();
-
-              today = Date.parse(today.getMonth()+1+'/'+today.getDate()+'/'+today.getFullYear());
-
-              var selDate = Date.parse(date);
-
-              if (selDate > today) {
-                  \$('.datepicker').val('');
-                  \$(inst).datepicker('show');
-                  return [false, ''];
-              } 
-              else {
-                  return [true, ''];
-              }
-
-            }
-    });
-
-        
-    });
-  </script>
+  <link rel=\"stylesheet\" href=\"{{ asset ('//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') }}\">
+  <link rel=\"stylesheet\" href=\"{{ asset ('/resources/demos/style.css') }}\">
+  <script src=\"{{ asset ('https://code.jquery.com/jquery-1.12.4.js') }}\"></script>
+  <script src=\"{{ asset ('https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}\"></script>
+  <script src=\"{{ asset ('i18n/datepicker-fr.js') }}\"></script>
   </head>
 
   <body>
@@ -428,12 +273,12 @@ class __TwigTemplate_d03733a9712433eea3e550cadf86502e857608ef3c60730c55ff9f9adae
     <hr>
 
     <footer>
-      <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+      <p>Développé par Mohamed Konaté</p>
     </footer>
   </div>
 
 
-<script src=\"{{ asset ('ajax.js') }}\"></script>
+<script src=\"{{ asset ('fichier.js') }}\"></script>
   </body>
 </html>
 ", "MKLouvreBundle::layout.html.twig", "C:\\xampp\\htdocs\\louvre\\src\\MK\\LouvreBundle\\Resources\\views\\layout.html.twig");

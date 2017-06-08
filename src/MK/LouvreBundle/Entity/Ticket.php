@@ -4,6 +4,7 @@ namespace MK\LouvreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Ticket
  *
@@ -62,6 +63,13 @@ class Ticket
      * @ORM\Column(name="tpTarif", type="integer")
      */
     private $tpTarif;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="prix", type="integer", nullable=true)
+     */
+    private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity="Reservation", inversedBy="tickets")
@@ -245,5 +253,29 @@ class Ticket
     public function getReservation()
     {
         return $this->reservation;
+    }
+
+    /**
+     * Set prix
+     *
+     * @param integer $prix
+     *
+     * @return Ticket
+     */
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * Get prix
+     *
+     * @return integer
+     */
+    public function getPrix()
+    {
+        return $this->prix;
     }
 }

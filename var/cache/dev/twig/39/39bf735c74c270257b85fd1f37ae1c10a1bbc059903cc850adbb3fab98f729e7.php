@@ -21,59 +21,77 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_1cdbad2ea3174c6c2a4c702262df5ee69bc2a67712a3257ef453e4484a5371f7 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_1cdbad2ea3174c6c2a4c702262df5ee69bc2a67712a3257ef453e4484a5371f7->enter($__internal_1cdbad2ea3174c6c2a4c702262df5ee69bc2a67712a3257ef453e4484a5371f7_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:reservation.html.twig"));
+        $__internal_948c6060605ba9fe686f1158886cd2ae379b0126c13f8de101c8f7754dcc7779 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_948c6060605ba9fe686f1158886cd2ae379b0126c13f8de101c8f7754dcc7779->enter($__internal_948c6060605ba9fe686f1158886cd2ae379b0126c13f8de101c8f7754dcc7779_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:reservation.html.twig"));
 
-        $__internal_8cc14f0cfdc6796c64790353b05142d3c41f02589c13b729082c5e56e5294763 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_8cc14f0cfdc6796c64790353b05142d3c41f02589c13b729082c5e56e5294763->enter($__internal_8cc14f0cfdc6796c64790353b05142d3c41f02589c13b729082c5e56e5294763_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:reservation.html.twig"));
+        $__internal_714dfcf7bad0acbb8d603bc0d9a7136af4ecad9cc270097d3632acc2ae78832a = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_714dfcf7bad0acbb8d603bc0d9a7136af4ecad9cc270097d3632acc2ae78832a->enter($__internal_714dfcf7bad0acbb8d603bc0d9a7136af4ecad9cc270097d3632acc2ae78832a_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:reservation.html.twig"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_1cdbad2ea3174c6c2a4c702262df5ee69bc2a67712a3257ef453e4484a5371f7->leave($__internal_1cdbad2ea3174c6c2a4c702262df5ee69bc2a67712a3257ef453e4484a5371f7_prof);
+        $__internal_948c6060605ba9fe686f1158886cd2ae379b0126c13f8de101c8f7754dcc7779->leave($__internal_948c6060605ba9fe686f1158886cd2ae379b0126c13f8de101c8f7754dcc7779_prof);
 
         
-        $__internal_8cc14f0cfdc6796c64790353b05142d3c41f02589c13b729082c5e56e5294763->leave($__internal_8cc14f0cfdc6796c64790353b05142d3c41f02589c13b729082c5e56e5294763_prof);
+        $__internal_714dfcf7bad0acbb8d603bc0d9a7136af4ecad9cc270097d3632acc2ae78832a->leave($__internal_714dfcf7bad0acbb8d603bc0d9a7136af4ecad9cc270097d3632acc2ae78832a_prof);
 
     }
 
     // line 3
     public function block_body($context, array $blocks = array())
     {
-        $__internal_a64f2b7bb64007ca5f5317135afdd17bb3038f2580411a8873389f563744a39d = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_a64f2b7bb64007ca5f5317135afdd17bb3038f2580411a8873389f563744a39d->enter($__internal_a64f2b7bb64007ca5f5317135afdd17bb3038f2580411a8873389f563744a39d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_964906579625cac0a4fb23456d414e591f9857185ea86e5807e9d868091c716c = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_964906579625cac0a4fb23456d414e591f9857185ea86e5807e9d868091c716c->enter($__internal_964906579625cac0a4fb23456d414e591f9857185ea86e5807e9d868091c716c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
-        $__internal_13c4c7ed53368c102ea99935f225bdef2fce0b3d912208b2944abd1afb120318 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_13c4c7ed53368c102ea99935f225bdef2fce0b3d912208b2944abd1afb120318->enter($__internal_13c4c7ed53368c102ea99935f225bdef2fce0b3d912208b2944abd1afb120318_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_c9d42fd1f40b99d9ebfe9e41e20a054c9622dccd9df597f02385418a23611938 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_c9d42fd1f40b99d9ebfe9e41e20a054c9622dccd9df597f02385418a23611938->enter($__internal_c9d42fd1f40b99d9ebfe9e41e20a054c9622dccd9df597f02385418a23611938_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
         // line 4
         echo "
   ";
         // line 6
         echo "  <h1>Formulaire de réservation</h1>
-
-  <hr>
+  ";
+        // line 7
+        $context['_parent'] = $context;
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "session", array()), "flashbag", array()), "get", array(0 => "errors"), "method"));
+        foreach ($context['_seq'] as $context["_key"] => $context["flashMessage"]) {
+            // line 8
+            echo "      
+      <div class=\"alert alert-danger\" style=\"width:52%\">
+          ";
+            // line 10
+            echo twig_escape_filter($this->env, $context["flashMessage"], "html", null, true);
+            echo "
+      </div>
+  ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['flashMessage'], $context['_parent'], $context['loop']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        // line 13
+        echo "  <hr>
 <div class=\"well\">
   ";
-        // line 10
+        // line 15
         echo         $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->renderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'form_start', array("attr" => array("class" => "form-horizontal")));
         echo "
 
   <div class=\"form-group\">
     ";
-        // line 14
+        // line 19
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "email", array()), 'label', array("label_attr" => array("class" => "col-sm-1"), "label" => "Email"));
         echo "
 
     ";
-        // line 17
+        // line 22
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "email", array()), 'errors');
         echo "
 
     <div class=\"col-sm-offset-2 col-sm-8\">
       ";
-        // line 21
+        // line 26
         echo "      ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "email", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
@@ -82,42 +100,41 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
  
    <div class=\"form-group\">
     ";
-        // line 27
+        // line 32
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dtReservation", array()), 'label', array("label_attr" => array("class" => "col-sm-3"), "label" => "Date de réservation"));
         echo "
 
     ";
-        // line 30
+        // line 35
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dtReservation", array()), 'errors');
         echo "
 
     <div class=\"col-sm-8\">
       ";
-        // line 34
+        // line 39
         echo "      ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dtReservation", array()), 'widget', array("attr" => array("class" => "datepicker")));
         echo "
     </div>
   </div>
-
   <div class=\"form-group\">
     ";
-        // line 40
+        // line 44
         echo "   \t";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "tpBillet", array()), 'label', array("label_attr" => array("class" => "col-sm-3"), "label" => "Type de billet"));
         echo "
 
     ";
-        // line 43
+        // line 47
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "tpBillet", array()), 'errors');
         echo "
 
     <div class=\"col-sm-8\">
       ";
-        // line 47
+        // line 51
         echo "      ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "tpBillet", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
@@ -126,20 +143,20 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
 
   <div class=\"form-group\">
     ";
-        // line 53
+        // line 57
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "nbBillet", array()), 'label', array("label_attr" => array("class" => "col-sm-3"), "label" => "Nombre de billet"));
         echo "
 
     ";
-        // line 56
+        // line 60
         echo "    ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "nbBillet", array()), 'errors');
         echo "
 
     <div class=\"col-sm-8\">
       ";
-        // line 60
+        // line 64
         echo "      ";
         echo $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "nbBillet", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
@@ -147,21 +164,20 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
   </div>
 
 <div class=\"form-group text-right\">
-    <input type=\"submit\" id=\"bouton\" class=\"btn btn-primary validCom\" value=\"Valider\" />
+    <input type=\"button\" id=\"bouton\" class=\"btn btn-primary\" value=\"Valider\" />
 </div>
 
-
 ";
-        // line 69
+        // line 72
         echo         $this->env->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')->renderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'form_end');
         echo "
 </div>
 ";
         
-        $__internal_13c4c7ed53368c102ea99935f225bdef2fce0b3d912208b2944abd1afb120318->leave($__internal_13c4c7ed53368c102ea99935f225bdef2fce0b3d912208b2944abd1afb120318_prof);
+        $__internal_c9d42fd1f40b99d9ebfe9e41e20a054c9622dccd9df597f02385418a23611938->leave($__internal_c9d42fd1f40b99d9ebfe9e41e20a054c9622dccd9df597f02385418a23611938_prof);
 
         
-        $__internal_a64f2b7bb64007ca5f5317135afdd17bb3038f2580411a8873389f563744a39d->leave($__internal_a64f2b7bb64007ca5f5317135afdd17bb3038f2580411a8873389f563744a39d_prof);
+        $__internal_964906579625cac0a4fb23456d414e591f9857185ea86e5807e9d868091c716c->leave($__internal_964906579625cac0a4fb23456d414e591f9857185ea86e5807e9d868091c716c_prof);
 
     }
 
@@ -177,7 +193,7 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
 
     public function getDebugInfo()
     {
-        return array (  156 => 69,  143 => 60,  136 => 56,  130 => 53,  121 => 47,  114 => 43,  108 => 40,  99 => 34,  92 => 30,  86 => 27,  77 => 21,  70 => 17,  64 => 14,  58 => 10,  52 => 6,  49 => 4,  40 => 3,  11 => 1,);
+        return array (  172 => 72,  160 => 64,  153 => 60,  147 => 57,  138 => 51,  131 => 47,  125 => 44,  117 => 39,  110 => 35,  104 => 32,  95 => 26,  88 => 22,  82 => 19,  76 => 15,  72 => 13,  63 => 10,  59 => 8,  55 => 7,  52 => 6,  49 => 4,  40 => 3,  11 => 1,);
     }
 
     /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */
@@ -196,7 +212,12 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
 
   {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
   <h1>Formulaire de réservation</h1>
-
+  {% for flashMessage in app.session.flashbag.get('errors') %}
+      
+      <div class=\"alert alert-danger\" style=\"width:52%\">
+          {{ flashMessage }}
+      </div>
+  {% endfor %}
   <hr>
 <div class=\"well\">
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
@@ -226,7 +247,6 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
       {{ form_widget(form.dtReservation, {'attr': {'class': 'datepicker'}}) }}
     </div>
   </div>
-
   <div class=\"form-group\">
     {# Génération du label. #}
    \t{{ form_label(form.tpBillet, \"Type de billet\", {'label_attr': {'class': 'col-sm-3'}}) }}
@@ -254,9 +274,8 @@ class __TwigTemplate_3a0fe635d130dae0123877d7a99585cd5e9d66d1fe8158da66c0d57124f
   </div>
 
 <div class=\"form-group text-right\">
-    <input type=\"submit\" id=\"bouton\" class=\"btn btn-primary validCom\" value=\"Valider\" />
+    <input type=\"button\" id=\"bouton\" class=\"btn btn-primary\" value=\"Valider\" />
 </div>
-
 
 {{ form_end(form) }}
 </div>

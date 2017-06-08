@@ -1,0 +1,42 @@
+{% extends "MKLouvreBundle::layout.html.twig" %}
+
+{% block body %}
+
+  {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+  <h1>Récapitulatif de la commande</h1>
+
+  <hr>
+<div class="well">
+
+<strong>Adresse e-mail</strong> : {{ email }} <br />
+
+<strong>Date de la réservation</strong> : {{ date_reservation|date("d/m/Y") }} <br />
+
+<strong>Type de billet</strong> : {{ type_billet }} <br />
+
+<strong>Nombre de billet</strong> : {{ nombre_billet }} <br />
+
+<strong>Reference de la Commande</strong> : {{ reference }} <br />
+
+ <br />
+
+{% for tickets in nom %}
+  
+<strong>Nom</strong> : {{ tickets.nom }} <br /> 
+<strong>Prenom</strong> : {{ tickets.prenom }} <br />
+<strong>date de naissance</strong> : {{tickets.dtNaissance|date("d/m/Y")}} <br />
+<strong>Nationalité</strong> : {{tickets.nationalite}} <br />
+<strong>Tarif réduit</strong> : {{tickets.tReduit}} <br />
+<strong>Type de tarif</strong> : {{tickets.tpTarif}} <br />
+<strong>prix</strong> : {{tickets.prix}}€
+<hr>
+
+{% endfor %}
+
+<strong>Total prix</strong> : {{total}}
+
+<div class="form-group text-right">
+    <a href="{{ path('mk_louvre_paiement') }}"><input type="button" id="bouton" class="btn btn-primary" value="Valider" /></a>
+</div>
+</div>
+{% endblock %}

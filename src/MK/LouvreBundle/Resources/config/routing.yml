@@ -8,3 +8,11 @@ mk_louvre_inscription:
 mk_louvre_ticket:
     path:     /ticket
     defaults: { _controller: MKLouvreBundle:Default:ticket }
+
+mk_louvre_recapitulatif:
+    path:     /recapitulatif
+    defaults: { _controller: MKLouvreBundle:Default:recapitulatif }
+
+mk_louvre_paiement:
+    path:     /paiement
+    defaults: { _controller: MKLouvreBundle:Default:paiement }

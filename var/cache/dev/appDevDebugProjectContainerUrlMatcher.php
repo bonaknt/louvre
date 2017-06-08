@@ -124,6 +124,16 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::ticketAction',  '_route' => 'mk_louvre_ticket',);
         }
 
+        // mk_louvre_recapitulatif
+        if ($pathinfo === '/recapitulatif') {
+            return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::recapitulatifAction',  '_route' => 'mk_louvre_recapitulatif',);
+        }
+
+        // mk_louvre_paiement
+        if ($pathinfo === '/paiement') {
+            return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::paiementAction',  '_route' => 'mk_louvre_paiement',);
+        }
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

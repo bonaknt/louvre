@@ -26,31 +26,42 @@ class DefaultController extends Controller
     {
 
 	    $reservation = new Reservation();
-	    /*$i = 0;
-	    while ($i != 2){
-	    	$ticket1 = new Ticket();
-	    	$i++;    	
-	    }*/
 
-	    $form   = $this->get('form.factory')->create(ReservationType::class, $reservation);
+
+	    $form = $this->get('form.factory')->create(ReservationType::class, $reservation);
 	      		
 
+	    $form->handleRequest($request);
 
+	    if ($form->isSubmitted() && $form->isValid()) {
 
-	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-	      /*$em = $this->getDoctrine()->getManager();
-
-	      $em->persist($reservation);
-	      $em->flush();*/
 	      $reference = $this->container->get('mk_louvre.reference');
 	      $session = new Session();
-	      $session->set('email', $reservation->getEmail());
+
 	      $session->set('dateReservation', $reservation->getDtReservation());
 	      $session->set('typeBillet', $reservation->getTpBillet());
-	      $session->set('nbBillet', $reservation->getNbBillet());
-	      $session->set('reference', $reference->generateur());
 
-	      return $this->redirectToRoute('mk_louvre_ticket');
+	      $datetime = new \DateTime();
+
+	      $blocageBillet = $this->container->get('mk_louvre.billet');
+
+	      $jour = $session->get('dateReservation')->format('j');
+	      $mois = $session->get('dateReservation')->format('m');
+	      $annee = $session->get('dateReservation')->format('Y');
+
+	      if ($blocageBillet->billet($jour, $mois, $annee) == 1){
+	      	$session->clear();
+	      	$session->getFlashBag()->add('errors', 'Erreur billet journée !');
+	      	return $this->redirectToRoute('mk_louvre_inscription');
+	      }
+	      else{
+	      	$session->set('email', $reservation->getEmail());
+			$session->set('nbBillet', $reservation->getNbBillet());
+			$session->set('reference', $reference->generateur());
+
+			return $this->redirectToRoute('mk_louvre_ticket');
+
+	      }      
 	    }
 
         return $this->render('MKLouvreBundle:Default:reservation.html.twig', array(
@@ -59,6 +70,8 @@ class DefaultController extends Controller
 	    ));
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public function ticketAction(Request $request)
     {
 
@@ -66,39 +79,14 @@ class DefaultController extends Controller
 
 	    $session = new Session();
 
-	   	//$ticket = new Ticket();
-    	//$reservation->getTickets()->add($ticket);
 
     	$i = 0;
-    	$enfant = 1;
-    	$normal = 2;
-    	$senior = 3;
-
 
 	    while ($i != $session->get('nbBillet')){
 	    	$ticket = new Ticket();
 	    	$ticket->setReservation($reservation);
 
-
-/*
-	    	$datetime = new \DateTime();
-		    $dateR = $ticket->getDtNaissance();
-		    //dump($dateR); die();
-		    $date = $dateR->diff($datetime);
-		    $dd = $date->format('%y');
-		    $difference = intval($dd);
-
-		    if ($difference < 13){
-		    	$ticket->setTpTarif($enfant);
-		    }
-		    else if ($difference > 12 && $difference < 60){
-		    	$ticket->setTpTarif($normal);
-		    }
-		    else{
-		    	$ticket->setTpTarif($senior);
-		    }
-*/
-		    $ticket->setTpTarif($enfant);
+		    $ticket->setTpTarif(0);
 	    	$reservation->getTickets()->add($ticket);
 	    	
 
@@ -107,32 +95,64 @@ class DefaultController extends Controller
 	        	
 
 	    $form   = $this->get('form.factory')->create(TicketsType::class, $reservation);
-  
-	    $reservation->setEmail($session->get('email'));
-	    $reservation->setDtReservation($session->get('dateReservation'));
-	    $reservation->setTpBillet($session->get('typeBillet'));
-	    $reservation->setNbBillet($session->get('nbBillet'));
-	    $reservation->setReference($session->get('reference'));
+ 
 
-
-
-	    
-
-
+	    $tickets = $reservation->getTickets();
 	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-	      $em = $this->getDoctrine()->getManager();
-	      $em->persist($ticket);
-	      $em->persist($reservation);
-	      $em->flush();
 
-	      $session->clear();
+	      $session = new Session();
+	      $session->set('tickets', $tickets);
 
-	      return $this->redirectToRoute('mk_louvre_homepage');
+	      return $this->redirectToRoute('mk_louvre_recapitulatif');
 	    }
 
         return $this->render('MKLouvreBundle:Default:ticket.html.twig', array(
 	      'form' => $form->createView(),
 	      
 	    ));
+    }
+
+
+    public function recapitulatifAction(Request $request)
+    {
+
+	    $reservation = new Reservation();
+
+	    $ticket = new Ticket();
+
+	    $session = new Session();
+
+	    $calculTarif = $this->container->get('mk_louvre.tarif');
+
+	    $calculTarif->tarif();
+	    $prix = 0;
+	    foreach ($session->get('tickets') as $tickets) {
+	    	$tickets->getPrix();
+	    	$prix += $tickets->getPrix();
+	    }
+
+        return $this->render('MKLouvreBundle:Default:recapitulatif.html.twig', array(
+	      'email' => 					$session->get('email'),
+	      'date_reservation' => 		$session->get('dateReservation'),
+	      'type_billet'		 =>			$session->get('typeBillet'),
+	      'nombre_billet'	 =>			$session->get('nbBillet'),
+	      'reference'		 =>			$session->get('reference'),
+	      'nom'				 =>			$session->get('tickets'),
+	      'total'			 =>			$prix,
+
+	      
+	    ));
+    }
+
+    public function paiementAction(Request $request)
+    {
+
+        return $this->render('MKLouvreBundle:Default:paiement.html.twig');
+    }
+
+
+    public function redirection()
+    {
+	    return $this->redirectToRoute('mk_louvre_inscription');
     }
 }
