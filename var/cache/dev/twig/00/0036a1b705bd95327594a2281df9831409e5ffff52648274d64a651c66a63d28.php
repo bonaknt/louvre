@@ -21,42 +21,59 @@ class __TwigTemplate_6833bbeb00218a2825e6a7b050b7c40f1f00493cdcf2c49e8384723f7ee
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_c5ddeaafb8ff63c6201515330f46214452b30eae10e07aa93451b51c6bf9c3dc = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_c5ddeaafb8ff63c6201515330f46214452b30eae10e07aa93451b51c6bf9c3dc->enter($__internal_c5ddeaafb8ff63c6201515330f46214452b30eae10e07aa93451b51c6bf9c3dc_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:index.html.twig"));
+        $__internal_8c1580b06a6c35e756a37bb0f881aee217c0d59226fb4eadb5ca10c677d84322 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_8c1580b06a6c35e756a37bb0f881aee217c0d59226fb4eadb5ca10c677d84322->enter($__internal_8c1580b06a6c35e756a37bb0f881aee217c0d59226fb4eadb5ca10c677d84322_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:index.html.twig"));
 
-        $__internal_446496997a7ab0e72beac84269dfdf6c292a0c0ff40e9be5e51cca81a0253e31 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_446496997a7ab0e72beac84269dfdf6c292a0c0ff40e9be5e51cca81a0253e31->enter($__internal_446496997a7ab0e72beac84269dfdf6c292a0c0ff40e9be5e51cca81a0253e31_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:index.html.twig"));
+        $__internal_ecf06f92d85ef827537ae54a1911d52f751b936f4015cb8dc0fa8abc5538fdfc = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_ecf06f92d85ef827537ae54a1911d52f751b936f4015cb8dc0fa8abc5538fdfc->enter($__internal_ecf06f92d85ef827537ae54a1911d52f751b936f4015cb8dc0fa8abc5538fdfc_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:index.html.twig"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_c5ddeaafb8ff63c6201515330f46214452b30eae10e07aa93451b51c6bf9c3dc->leave($__internal_c5ddeaafb8ff63c6201515330f46214452b30eae10e07aa93451b51c6bf9c3dc_prof);
+        $__internal_8c1580b06a6c35e756a37bb0f881aee217c0d59226fb4eadb5ca10c677d84322->leave($__internal_8c1580b06a6c35e756a37bb0f881aee217c0d59226fb4eadb5ca10c677d84322_prof);
 
         
-        $__internal_446496997a7ab0e72beac84269dfdf6c292a0c0ff40e9be5e51cca81a0253e31->leave($__internal_446496997a7ab0e72beac84269dfdf6c292a0c0ff40e9be5e51cca81a0253e31_prof);
+        $__internal_ecf06f92d85ef827537ae54a1911d52f751b936f4015cb8dc0fa8abc5538fdfc->leave($__internal_ecf06f92d85ef827537ae54a1911d52f751b936f4015cb8dc0fa8abc5538fdfc_prof);
 
     }
 
     // line 5
     public function block_ocplatform_body($context, array $blocks = array())
     {
-        $__internal_6ee5ce133b97a618e065e4581922189b2eef58435c3a55bf876ba076fc8aa9de = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_6ee5ce133b97a618e065e4581922189b2eef58435c3a55bf876ba076fc8aa9de->enter($__internal_6ee5ce133b97a618e065e4581922189b2eef58435c3a55bf876ba076fc8aa9de_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "ocplatform_body"));
+        $__internal_6d64053d47a448348bfa3ffb6b76858a86e6372eb1c2c8a5d8fcf51220123a14 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_6d64053d47a448348bfa3ffb6b76858a86e6372eb1c2c8a5d8fcf51220123a14->enter($__internal_6d64053d47a448348bfa3ffb6b76858a86e6372eb1c2c8a5d8fcf51220123a14_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "ocplatform_body"));
 
-        $__internal_d153b1c1d412fad592b8d31b291ca2519e1e5678a8400af3c1fb86f2779137b4 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_d153b1c1d412fad592b8d31b291ca2519e1e5678a8400af3c1fb86f2779137b4->enter($__internal_d153b1c1d412fad592b8d31b291ca2519e1e5678a8400af3c1fb86f2779137b4_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "ocplatform_body"));
+        $__internal_5967bd27aaf25bfaad504134ffcdbee1d4cb1d546bd328bff9f87b4880d1a26b = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_5967bd27aaf25bfaad504134ffcdbee1d4cb1d546bd328bff9f87b4880d1a26b->enter($__internal_5967bd27aaf25bfaad504134ffcdbee1d4cb1d546bd328bff9f87b4880d1a26b_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "ocplatform_body"));
 
         // line 6
-        echo "
-  <h2>Liste des annonce</h2>
+        echo "    ";
+        $context['_parent'] = $context;
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "session", array()), "flashbag", array()), "get", array(0 => "success"), "method"));
+        foreach ($context['_seq'] as $context["_key"] => $context["flashMessage"]) {
+            // line 7
+            echo "      
+      <div class=\"alert alert-success\" style=\"width:52%\">
+          ";
+            // line 9
+            echo twig_escape_filter($this->env, $context["flashMessage"], "html", null, true);
+            echo "
+      </div>
+    ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['flashMessage'], $context['_parent'], $context['loop']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        // line 12
+        echo "  <h2>L'accueil du site</h2>
 
 
 
 ";
         
-        $__internal_d153b1c1d412fad592b8d31b291ca2519e1e5678a8400af3c1fb86f2779137b4->leave($__internal_d153b1c1d412fad592b8d31b291ca2519e1e5678a8400af3c1fb86f2779137b4_prof);
+        $__internal_5967bd27aaf25bfaad504134ffcdbee1d4cb1d546bd328bff9f87b4880d1a26b->leave($__internal_5967bd27aaf25bfaad504134ffcdbee1d4cb1d546bd328bff9f87b4880d1a26b_prof);
 
         
-        $__internal_6ee5ce133b97a618e065e4581922189b2eef58435c3a55bf876ba076fc8aa9de->leave($__internal_6ee5ce133b97a618e065e4581922189b2eef58435c3a55bf876ba076fc8aa9de_prof);
+        $__internal_6d64053d47a448348bfa3ffb6b76858a86e6372eb1c2c8a5d8fcf51220123a14->leave($__internal_6d64053d47a448348bfa3ffb6b76858a86e6372eb1c2c8a5d8fcf51220123a14_prof);
 
     }
 
@@ -72,7 +89,7 @@ class __TwigTemplate_6833bbeb00218a2825e6a7b050b7c40f1f00493cdcf2c49e8384723f7ee
 
     public function getDebugInfo()
     {
-        return array (  49 => 6,  40 => 5,  11 => 3,);
+        return array (  67 => 12,  58 => 9,  54 => 7,  49 => 6,  40 => 5,  11 => 3,);
     }
 
     /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */
@@ -90,8 +107,13 @@ class __TwigTemplate_6833bbeb00218a2825e6a7b050b7c40f1f00493cdcf2c49e8384723f7ee
 {% extends \"MKLouvreBundle:Default:layout.html.twig\" %}
 
 {% block ocplatform_body %}
-
-  <h2>Liste des annonce</h2>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+      
+      <div class=\"alert alert-success\" style=\"width:52%\">
+          {{ flashMessage }}
+      </div>
+    {% endfor %}
+  <h2>L'accueil du site</h2>
 
 
 

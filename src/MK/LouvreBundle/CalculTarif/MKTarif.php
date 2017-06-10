@@ -46,28 +46,57 @@ class MKTarif
       $date = $dateR->diff($datetime);
       $dateFormat = $date->format('%y');
       $difference = intval($dateFormat);
-
+      //dump($session->get('typeBillet')); die();
       if ($ticket->getTReduit() == TRUE){
         $tarif = $tarifReduit;
-        $ticket->setTpTarif($tarif);
-        $ticket->setprix($prixReduit);
+        if ($session->get('typeBillet') == 2){
+          $prix = $prixReduit / 2;
+          $ticket->setTpTarif($tarif); 
+          $ticket->setPrix($prix);
+        }
+        else{
+          $ticket->setTpTarif($tarif); 
+          $ticket->setPrix($prixReduit);
+        }
+
       }
       else if ($difference < 12){
         $tarif = $enfant;
-        $ticket->setTpTarif($tarif);
-        $ticket->setprix($prixEnfant);
+        if ($session->get('typeBillet') == 2){
+          $prix = $prixEnfant / 2; 
+          $ticket->setPrix($prix);
+          $ticket->setTpTarif($tarif);
+        }
+        else{
+          $ticket->setTpTarif($tarif); 
+          $ticket->setPrix($prixEnfant);
+        }
       }
       else if ($difference > 11 && $difference < 60){
         $tarif = $normal;
 
-        $ticket->setTpTarif($tarif);
-        $ticket->setprix($prixNormal);
+        if ($session->get('typeBillet') == 2){
+          $prix = $prixNormal / 2;
+          $ticket->setPrix($prix);
+          $ticket->setTpTarif($tarif);
+        }
+        else{
+          $ticket->setTpTarif($tarif); 
+          $ticket->setPrix($prixNormal);
+        }
       }
       else{
         $tarif = $senior;
 
-        $ticket->setTpTarif($tarif);
-        $ticket->setprix($prixSenior);
+        if ($session->get('typeBillet') == 2){
+          $prix = $prixSenior / 2;
+          $ticket->setPrix($prix);
+          $ticket->setTpTarif($tarif);
+        }
+        else{
+          $ticket->setTpTarif($tarif); 
+          $ticket->setPrix($prixSenior);
+        }
       }
     }
 

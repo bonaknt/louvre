@@ -37,7 +37,12 @@ class MKBillet
 
           if($datetime->format('Y') == $annee){
 
-            return 1;
+            if($datetime->format('H') > 13){
+              return 1;
+            }
+            else{
+              return 0;
+            }
           }
           else{
             return 0;

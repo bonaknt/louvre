@@ -8,7 +8,7 @@ use MK\LouvreBundle\Form\ReservationType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Symfony\component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
@@ -27,14 +27,14 @@ class BlocageValidator extends ConstraintValidator
 
 	public function validate($value, Constraint $constraint)
 	{
-
+		$session = new session();
 		$listResa = $this->em
 	      ->getRepository('MKLouvreBundle:Reservation')
 			->limitationReservation($value)
 		;
 
 		$key = 1;
-
+ 	
 		foreach ($listResa as $key => $list) {
 			
 			foreach ($list as $key => $resa) {

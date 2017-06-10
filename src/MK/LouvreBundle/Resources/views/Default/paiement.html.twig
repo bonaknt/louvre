@@ -7,7 +7,25 @@
 
   <hr>
 <div class="well">
-
+<div class="nav-space-checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <form action="" method="POST">
+                <script
+                  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="pk_test_aeifgBAjMBGrS9TNW9YMZbrJ"
+                  data-amount={{ prix * 100}}
+                  data-name="Musée du louvre"
+                  data-description="Billet de réservation musée du louvre"
+                  data-locale="auto"
+                  data-currency="eur">
+                </script>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 {% endblock %}

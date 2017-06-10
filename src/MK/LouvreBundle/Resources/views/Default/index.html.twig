@@ -3,7 +3,12 @@
 {% extends "MKLouvreBundle:Default:layout.html.twig" %}
 
 {% block ocplatform_body %}
-
+    {% for flashMessage in app.session.flashbag.get('success') %}
+      
+      <div class="alert alert-success" style="width:52%">
+          {{ flashMessage }}
+      </div>
+    {% endfor %}
   <h2>L'accueil du site</h2>
 
 

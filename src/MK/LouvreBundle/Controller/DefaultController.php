@@ -131,6 +131,8 @@ class DefaultController extends Controller
 	    	$prix += $tickets->getPrix();
 	    }
 
+	    $session->set('prix', $prix);
+
         return $this->render('MKLouvreBundle:Default:recapitulatif.html.twig', array(
 	      'email' => 					$session->get('email'),
 	      'date_reservation' => 		$session->get('dateReservation'),
@@ -146,8 +148,112 @@ class DefaultController extends Controller
 
     public function paiementAction(Request $request)
     {
+    	$em = $this->getDoctrine()->getManager();
+    	$reservation = new Reservation();
+    	$session = new Session();
 
-        return $this->render('MKLouvreBundle:Default:paiement.html.twig');
+    	$prix = $session->get('prix');
+
+        if ($request->isMethod('POST')) {
+            $token = $request->request->get('stripeToken');
+
+            //dump($reservation); die();
+            $reservation->setDtReservation($session->get('dateReservation'));
+            $reservation->setTpBillet($session->get('typeBillet'));
+            $reservation->setNbBillet($session->get('nbBillet'));
+            $reservation->setEmail($session->get('email'));
+            $reservation->setReference($session->get('reference'));
+            
+            foreach ($session->get('tickets') as $value) {
+            	$ticket = new Ticket();
+            	$ticket->setNom($value->getNom());
+            	$ticket->setPrenom($value->getPrenom());
+            	$ticket->setDtNaissance($value->getDtNaissance());
+            	$ticket->setTReduit($value->getTReduit());
+            	$ticket->setTpTarif($value->getTpTarif());
+            	$ticket->setNationalite($value->getNationalite());
+            	$ticket->setPrix($value->getPrix());
+            	$ticket->setReservation($reservation);
+
+            	$em->persist($ticket);
+            }
+            $em->persist($reservation);
+            $em->flush();
+
+           	foreach ($session->get('tickets') as $tickets) {
+		    	$tickets->getPrix();
+		    	$prix += $tickets->getPrix();
+		    	if ($session->get('typeBillet') == 2)
+		    	{
+		    		$tPrix = $prix / 2;
+		    	}
+		    }
+
+
+	    	$mailBodyHTML = $this->render('MKLouvreBundle:Default:email.html.twig', [
+						'email' 			 => 		$session->get('email'),
+						'date_reservation' 	 => 		$session->get('dateReservation'),
+						'type_billet'		 =>			$session->get('typeBillet'),
+						'nombre_billet'	 	 =>			$session->get('nbBillet'),
+						'reference'		 	 =>			$session->get('reference'),
+						'nom'				 =>			$session->get('tickets'),
+	                	'total'				 => 		$tPrix,
+            ])->getContent();
+
+	        //  Envoie d'email
+	        $message = \Swift_Message::newInstance();
+	        $message->setSubject("Votre réservation pour le musée du Louvre");
+	        $message->setFrom('confirmation@museedulouvre.com');
+	        $message->setTo($session->get('email'));
+	        // pour envoyer le message en HTML
+	        $message->setBody(
+	            $mailBodyHTML,
+	            'text/html');
+	        //envoi du message
+	        $this->get('mailer')->send($message);
+
+/*            $message = \Swift_Message::newInstance()
+	        ->setSubject('Réservation de billet')
+	        ->setFrom('m.konatedev@gmail.com')
+	        ->setTo($session->get('email'))
+	        ->setBody(
+	            $this->renderView(
+	                'MKLouvreBundle:Default:email.html.twig',
+	                array(
+
+						'email' 			 => 		$session->get('email'),
+						'date_reservation' 	 => 		$session->get('dateReservation'),
+						'type_billet'		 =>			$session->get('typeBillet'),
+						'nombre_billet'	 	 =>			$session->get('nbBillet'),
+						'reference'		 	 =>			$session->get('reference'),
+						'nom'				 =>			$session->get('tickets'),
+	                	'total'				 => 		$prix,
+
+	                	), 'text/html'
+	            	)
+	        	)
+	    	;
+	    	$this->get('mailer')->send($message);
+
+*/
+            \Stripe\Stripe::setApiKey("sk_test_3Rhg0Hiy8Gw3VMaOIrrbE4cE");
+            \Stripe\Charge::create(array(
+              "amount" => $prix * 100,
+              "currency" => "eur",
+              "source" => $token,
+              "description" => "Billet de reservation",
+              ));
+
+            $session->getFlashBag()->add('success', 'Paiement accépté !');
+            $session->clear();
+            return $this->redirectToRoute('mk_louvre_homepage');
+        }
+
+        return $this->render('MKLouvreBundle:Default:paiement.html.twig', array(
+	      'prix'			=>			$prix,
+
+	      
+	    ));
     }
 
 

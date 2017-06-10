@@ -12,7 +12,15 @@
 
 <strong>Date de la réservation</strong> : {{ date_reservation|date("d/m/Y") }} <br />
 
-<strong>Type de billet</strong> : {{ type_billet }} <br />
+<strong>Type de billet</strong> : 
+
+{% if type_billet == 1%} 
+Journée 
+
+{% elseif type_billet == 2 %}
+Demi-Journée
+{% endif %}
+<br />
 
 <strong>Nombre de billet</strong> : {{ nombre_billet }} <br />
 
@@ -26,15 +34,30 @@
 <strong>Prenom</strong> : {{ tickets.prenom }} <br />
 <strong>date de naissance</strong> : {{tickets.dtNaissance|date("d/m/Y")}} <br />
 <strong>Nationalité</strong> : {{tickets.nationalite}} <br />
-<strong>Tarif réduit</strong> : {{tickets.tReduit}} <br />
-<strong>Type de tarif</strong> : {{tickets.tpTarif}} <br />
+<strong>Tarif réduit</strong> : 
+{% if tickets.tReduit == true %} 
+Oui
+{% elseif tickets.tReduit == false %}
+Non
+{% endif %}
+<br />
+<strong>Type de tarif</strong> : 
+{% if tickets.tpTarif == 1 %} 
+Enfant
+{% elseif tickets.tpTarif == 2 %}
+Normal
+{% elseif tickets.tpTarif == 3 %}
+Senior
+{% elseif tickets.tpTarif == 4 %}
+Tarif réduit
+{% endif %}
+<br />
 <strong>prix</strong> : {{tickets.prix}}€
 <hr>
 
 {% endfor %}
 
-<strong>Total prix</strong> : {{total}}
-
+<strong>Total prix</strong> : {{total}}€
 <div class="form-group text-right">
     <a href="{{ path('mk_louvre_paiement') }}"><input type="button" id="bouton" class="btn btn-primary" value="Valider" /></a>
 </div>
