@@ -23,8 +23,10 @@ class appProdProjectContainerUrlGenerator extends Symfony\Component\Routing\Gene
         $this->logger = $logger;
         if (null === self::$declaredRoutes) {
             self::$declaredRoutes = array(
-        'mk_louvre_homepage' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::indexAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
-        'mk_louvre_inscription' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::reservationAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/reservation',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'mk_louvre_reservation' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::reservationAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'mk_louvre_ticket' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::ticketAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/ticket',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'mk_louvre_recapitulatif' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::recapitulatifAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/recapitulatif',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'mk_louvre_paiement' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::paiementAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/paiement',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
     );
         }
     }

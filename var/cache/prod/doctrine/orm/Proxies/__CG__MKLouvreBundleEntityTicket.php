@@ -64,10 +64,10 @@ class Ticket extends \MK\LouvreBundle\Entity\Ticket implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prenom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'dtNaissance', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nationalite', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tReduit', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tpTarif'];
+            return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prenom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'dtNaissance', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nationalite', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tReduit', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tpTarif', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prix', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'reservation'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prenom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'dtNaissance', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nationalite', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tReduit', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tpTarif'];
+        return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prenom', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'dtNaissance', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'nationalite', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tReduit', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'tpTarif', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'prix', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Ticket' . "\0" . 'reservation'];
     }
 
     /**
@@ -318,6 +318,50 @@ class Ticket extends \MK\LouvreBundle\Entity\Ticket implements \Doctrine\ORM\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNationalite', []);
 
         return parent::getNationalite();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setReservation(\MK\LouvreBundle\Entity\Reservation $reservation = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setReservation', [$reservation]);
+
+        return parent::setReservation($reservation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getReservation()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getReservation', []);
+
+        return parent::getReservation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPrix($prix)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPrix', [$prix]);
+
+        return parent::setPrix($prix);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPrix()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrix', []);
+
+        return parent::getPrix();
     }
 
 }

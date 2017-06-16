@@ -64,10 +64,10 @@ class Reservation extends \MK\LouvreBundle\Entity\Reservation implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'dtReservation', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tpBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'nbBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'email'];
+            return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'dtReservation', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tpBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'nbBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'email', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'reference', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tickets'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'dtReservation', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tpBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'nbBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'email'];
+        return ['__isInitialized__', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'id', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'dtReservation', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tpBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'nbBillet', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'email', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'reference', '' . "\0" . 'MK\\LouvreBundle\\Entity\\Reservation' . "\0" . 'tickets'];
     }
 
     /**
@@ -274,6 +274,61 @@ class Reservation extends \MK\LouvreBundle\Entity\Reservation implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addTicket(\MK\LouvreBundle\Entity\Ticket $ticket)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTicket', [$ticket]);
+
+        return parent::addTicket($ticket);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeTicket(\MK\LouvreBundle\Entity\Ticket $ticket)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTicket', [$ticket]);
+
+        return parent::removeTicket($ticket);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTickets()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTickets', []);
+
+        return parent::getTickets();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setReference($reference)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setReference', [$reference]);
+
+        return parent::setReference($reference);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getReference()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getReference', []);
+
+        return parent::getReference();
     }
 
 }

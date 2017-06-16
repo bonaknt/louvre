@@ -1,9 +1,6 @@
-mk_louvre_homepage:
-    path:     /
-    defaults: { _controller: MKLouvreBundle:Default:index }
 
-mk_louvre_inscription:
-    path:     /reservation
+mk_louvre_reservation:
+    path:     /
     defaults: { _controller: MKLouvreBundle:Default:reservation }
 mk_louvre_ticket:
     path:     /ticket

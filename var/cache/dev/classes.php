@@ -2915,6 +2915,450 @@ return false;
 }
 }
 }
+namespace Symfony\Component\Debug
+{
+use Psr\Log\LogLevel;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Debug\Exception\ContextErrorException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\Debug\Exception\OutOfMemoryException;
+use Symfony\Component\Debug\Exception\SilencedErrorContext;
+use Symfony\Component\Debug\FatalErrorHandler\UndefinedFunctionFatalErrorHandler;
+use Symfony\Component\Debug\FatalErrorHandler\UndefinedMethodFatalErrorHandler;
+use Symfony\Component\Debug\FatalErrorHandler\ClassNotFoundFatalErrorHandler;
+use Symfony\Component\Debug\FatalErrorHandler\FatalErrorHandlerInterface;
+class ErrorHandler
+{
+private $levels = array(
+E_DEPRECATED =>'Deprecated',
+E_USER_DEPRECATED =>'User Deprecated',
+E_NOTICE =>'Notice',
+E_USER_NOTICE =>'User Notice',
+E_STRICT =>'Runtime Notice',
+E_WARNING =>'Warning',
+E_USER_WARNING =>'User Warning',
+E_COMPILE_WARNING =>'Compile Warning',
+E_CORE_WARNING =>'Core Warning',
+E_USER_ERROR =>'User Error',
+E_RECOVERABLE_ERROR =>'Catchable Fatal Error',
+E_COMPILE_ERROR =>'Compile Error',
+E_PARSE =>'Parse Error',
+E_ERROR =>'Error',
+E_CORE_ERROR =>'Core Error',
+);
+private $loggers = array(
+E_DEPRECATED => array(null, LogLevel::INFO),
+E_USER_DEPRECATED => array(null, LogLevel::INFO),
+E_NOTICE => array(null, LogLevel::WARNING),
+E_USER_NOTICE => array(null, LogLevel::WARNING),
+E_STRICT => array(null, LogLevel::WARNING),
+E_WARNING => array(null, LogLevel::WARNING),
+E_USER_WARNING => array(null, LogLevel::WARNING),
+E_COMPILE_WARNING => array(null, LogLevel::WARNING),
+E_CORE_WARNING => array(null, LogLevel::WARNING),
+E_USER_ERROR => array(null, LogLevel::CRITICAL),
+E_RECOVERABLE_ERROR => array(null, LogLevel::CRITICAL),
+E_COMPILE_ERROR => array(null, LogLevel::CRITICAL),
+E_PARSE => array(null, LogLevel::CRITICAL),
+E_ERROR => array(null, LogLevel::CRITICAL),
+E_CORE_ERROR => array(null, LogLevel::CRITICAL),
+);
+private $thrownErrors = 0x1FFF; private $scopedErrors = 0x1FFF; private $tracedErrors = 0x77FB; private $screamedErrors = 0x55; private $loggedErrors = 0;
+private $traceReflector;
+private $isRecursive = 0;
+private $isRoot = false;
+private $exceptionHandler;
+private $bootstrappingLogger;
+private static $reservedMemory;
+private static $stackedErrors = array();
+private static $stackedErrorLevels = array();
+private static $toStringException = null;
+private static $exitCode = 0;
+public static function register(self $handler = null, $replace = true)
+{
+if (null === self::$reservedMemory) {
+self::$reservedMemory = str_repeat('x', 10240);
+register_shutdown_function(__CLASS__.'::handleFatalError');
+}
+if ($handlerIsNew = null === $handler) {
+$handler = new static();
+}
+if (null === $prev = set_error_handler(array($handler,'handleError'))) {
+restore_error_handler();
+set_error_handler(array($handler,'handleError'), $handler->thrownErrors | $handler->loggedErrors);
+$handler->isRoot = true;
+}
+if ($handlerIsNew && is_array($prev) && $prev[0] instanceof self) {
+$handler = $prev[0];
+$replace = false;
+}
+if ($replace || !$prev) {
+$handler->setExceptionHandler(set_exception_handler(array($handler,'handleException')));
+} else {
+restore_error_handler();
+}
+$handler->throwAt(E_ALL & $handler->thrownErrors, true);
+return $handler;
+}
+public function __construct(BufferingLogger $bootstrappingLogger = null)
+{
+if ($bootstrappingLogger) {
+$this->bootstrappingLogger = $bootstrappingLogger;
+$this->setDefaultLogger($bootstrappingLogger);
+}
+$this->traceReflector = new \ReflectionProperty('Exception','trace');
+$this->traceReflector->setAccessible(true);
+}
+public function setDefaultLogger(LoggerInterface $logger, $levels = E_ALL, $replace = false)
+{
+$loggers = array();
+if (is_array($levels)) {
+foreach ($levels as $type => $logLevel) {
+if (empty($this->loggers[$type][0]) || $replace || $this->loggers[$type][0] === $this->bootstrappingLogger) {
+$loggers[$type] = array($logger, $logLevel);
+}
+}
+} else {
+if (null === $levels) {
+$levels = E_ALL;
+}
+foreach ($this->loggers as $type => $log) {
+if (($type & $levels) && (empty($log[0]) || $replace || $log[0] === $this->bootstrappingLogger)) {
+$log[0] = $logger;
+$loggers[$type] = $log;
+}
+}
+}
+$this->setLoggers($loggers);
+}
+public function setLoggers(array $loggers)
+{
+$prevLogged = $this->loggedErrors;
+$prev = $this->loggers;
+$flush = array();
+foreach ($loggers as $type => $log) {
+if (!isset($prev[$type])) {
+throw new \InvalidArgumentException('Unknown error type: '.$type);
+}
+if (!is_array($log)) {
+$log = array($log);
+} elseif (!array_key_exists(0, $log)) {
+throw new \InvalidArgumentException('No logger provided');
+}
+if (null === $log[0]) {
+$this->loggedErrors &= ~$type;
+} elseif ($log[0] instanceof LoggerInterface) {
+$this->loggedErrors |= $type;
+} else {
+throw new \InvalidArgumentException('Invalid logger provided');
+}
+$this->loggers[$type] = $log + $prev[$type];
+if ($this->bootstrappingLogger && $prev[$type][0] === $this->bootstrappingLogger) {
+$flush[$type] = $type;
+}
+}
+$this->reRegister($prevLogged | $this->thrownErrors);
+if ($flush) {
+foreach ($this->bootstrappingLogger->cleanLogs() as $log) {
+$type = $log[2]['exception'] instanceof \ErrorException ? $log[2]['exception']->getSeverity() : E_ERROR;
+if (!isset($flush[$type])) {
+$this->bootstrappingLogger->log($log[0], $log[1], $log[2]);
+} elseif ($this->loggers[$type][0]) {
+$this->loggers[$type][0]->log($this->loggers[$type][1], $log[1], $log[2]);
+}
+}
+}
+return $prev;
+}
+public function setExceptionHandler(callable $handler = null)
+{
+$prev = $this->exceptionHandler;
+$this->exceptionHandler = $handler;
+return $prev;
+}
+public function throwAt($levels, $replace = false)
+{
+$prev = $this->thrownErrors;
+$this->thrownErrors = ($levels | E_RECOVERABLE_ERROR | E_USER_ERROR) & ~E_USER_DEPRECATED & ~E_DEPRECATED;
+if (!$replace) {
+$this->thrownErrors |= $prev;
+}
+$this->reRegister($prev | $this->loggedErrors);
+return $prev;
+}
+public function scopeAt($levels, $replace = false)
+{
+$prev = $this->scopedErrors;
+$this->scopedErrors = (int) $levels;
+if (!$replace) {
+$this->scopedErrors |= $prev;
+}
+return $prev;
+}
+public function traceAt($levels, $replace = false)
+{
+$prev = $this->tracedErrors;
+$this->tracedErrors = (int) $levels;
+if (!$replace) {
+$this->tracedErrors |= $prev;
+}
+return $prev;
+}
+public function screamAt($levels, $replace = false)
+{
+$prev = $this->screamedErrors;
+$this->screamedErrors = (int) $levels;
+if (!$replace) {
+$this->screamedErrors |= $prev;
+}
+return $prev;
+}
+private function reRegister($prev)
+{
+if ($prev !== $this->thrownErrors | $this->loggedErrors) {
+$handler = set_error_handler('var_dump');
+$handler = is_array($handler) ? $handler[0] : null;
+restore_error_handler();
+if ($handler === $this) {
+restore_error_handler();
+if ($this->isRoot) {
+set_error_handler(array($this,'handleError'), $this->thrownErrors | $this->loggedErrors);
+} else {
+set_error_handler(array($this,'handleError'));
+}
+}
+}
+}
+public function handleError($type, $message, $file, $line)
+{
+$level = error_reporting() | E_RECOVERABLE_ERROR | E_USER_ERROR | E_DEPRECATED | E_USER_DEPRECATED;
+$log = $this->loggedErrors & $type;
+$throw = $this->thrownErrors & $type & $level;
+$type &= $level | $this->screamedErrors;
+if (!$type || (!$log && !$throw)) {
+return $type && $log;
+}
+$scope = $this->scopedErrors & $type;
+if (4 < $numArgs = func_num_args()) {
+$context = $scope ? (func_get_arg(4) ?: array()) : array();
+$backtrace = 5 < $numArgs ? func_get_arg(5) : null; } else {
+$context = array();
+$backtrace = null;
+}
+if (isset($context['GLOBALS']) && $scope) {
+$e = $context; unset($e['GLOBALS'], $context); $context = $e;
+}
+if (null !== $backtrace && $type & E_ERROR) {
+$this->handleFatalError(compact('type','message','file','line','backtrace'));
+return true;
+}
+$logMessage = $this->levels[$type].': '.$message;
+if (null !== self::$toStringException) {
+$errorAsException = self::$toStringException;
+self::$toStringException = null;
+} elseif (!$throw && !($type & $level)) {
+$errorAsException = new SilencedErrorContext($type, $file, $line);
+} else {
+if ($scope) {
+$errorAsException = new ContextErrorException($logMessage, 0, $type, $file, $line, $context);
+} else {
+$errorAsException = new \ErrorException($logMessage, 0, $type, $file, $line);
+}
+if ($throw || $this->tracedErrors & $type) {
+$backtrace = $backtrace ?: $errorAsException->getTrace();
+$lightTrace = $backtrace;
+for ($i = 0; isset($backtrace[$i]); ++$i) {
+if (isset($backtrace[$i]['file'], $backtrace[$i]['line']) && $backtrace[$i]['line'] === $line && $backtrace[$i]['file'] === $file) {
+$lightTrace = array_slice($lightTrace, 1 + $i);
+break;
+}
+}
+if (!($throw || $this->scopedErrors & $type)) {
+for ($i = 0; isset($lightTrace[$i]); ++$i) {
+unset($lightTrace[$i]['args']);
+}
+}
+$this->traceReflector->setValue($errorAsException, $lightTrace);
+} else {
+$this->traceReflector->setValue($errorAsException, array());
+}
+}
+if ($throw) {
+if (E_USER_ERROR & $type) {
+for ($i = 1; isset($backtrace[$i]); ++$i) {
+if (isset($backtrace[$i]['function'], $backtrace[$i]['type'], $backtrace[$i - 1]['function'])
+&&'__toString'=== $backtrace[$i]['function']
+&&'->'=== $backtrace[$i]['type']
+&& !isset($backtrace[$i - 1]['class'])
+&& ('trigger_error'=== $backtrace[$i - 1]['function'] ||'user_error'=== $backtrace[$i - 1]['function'])
+) {
+foreach ($context as $e) {
+if (($e instanceof \Exception || $e instanceof \Throwable) && $e->__toString() === $message) {
+if (1 === $i) {
+$errorAsException = $e;
+break;
+}
+self::$toStringException = $e;
+return true;
+}
+}
+if (1 < $i) {
+$this->handleException($errorAsException);
+return false;
+}
+}
+}
+}
+throw $errorAsException;
+}
+if ($this->isRecursive) {
+$log = 0;
+} elseif (self::$stackedErrorLevels) {
+self::$stackedErrors[] = array(
+$this->loggers[$type][0],
+($type & $level) ? $this->loggers[$type][1] : LogLevel::DEBUG,
+$logMessage,
+array('exception'=> $errorAsException),
+);
+} else {
+try {
+$this->isRecursive = true;
+$level = ($type & $level) ? $this->loggers[$type][1] : LogLevel::DEBUG;
+$this->loggers[$type][0]->log($level, $logMessage, array('exception'=> $errorAsException));
+} finally {
+$this->isRecursive = false;
+}
+}
+return $type && $log;
+}
+public function handleException($exception, array $error = null)
+{
+if (null === $error) {
+self::$exitCode = 255;
+}
+if (!$exception instanceof \Exception) {
+$exception = new FatalThrowableError($exception);
+}
+$type = $exception instanceof FatalErrorException ? $exception->getSeverity() : E_ERROR;
+if (($this->loggedErrors & $type) || $exception instanceof FatalThrowableError) {
+if ($exception instanceof FatalErrorException) {
+if ($exception instanceof FatalThrowableError) {
+$error = array('type'=> $type,'message'=> $message = $exception->getMessage(),'file'=> $exception->getFile(),'line'=> $exception->getLine(),
+);
+} else {
+$message ='Fatal '.$exception->getMessage();
+}
+} elseif ($exception instanceof \ErrorException) {
+$message ='Uncaught '.$exception->getMessage();
+if ($exception instanceof ContextErrorException) {
+$e['context'] = $exception->getContext();
+}
+} else {
+$message ='Uncaught Exception: '.$exception->getMessage();
+}
+}
+if ($this->loggedErrors & $type) {
+try {
+$this->loggers[$type][0]->log($this->loggers[$type][1], $message, array('exception'=> $exception));
+} catch (\Exception $handlerException) {
+} catch (\Throwable $handlerException) {
+}
+}
+if ($exception instanceof FatalErrorException && !$exception instanceof OutOfMemoryException && $error) {
+foreach ($this->getFatalErrorHandlers() as $handler) {
+if ($e = $handler->handleError($error, $exception)) {
+$exception = $e;
+break;
+}
+}
+}
+if (empty($this->exceptionHandler)) {
+throw $exception; }
+try {
+call_user_func($this->exceptionHandler, $exception);
+} catch (\Exception $handlerException) {
+} catch (\Throwable $handlerException) {
+}
+if (isset($handlerException)) {
+$this->exceptionHandler = null;
+$this->handleException($handlerException);
+}
+}
+public static function handleFatalError(array $error = null)
+{
+if (null === self::$reservedMemory) {
+return;
+}
+self::$reservedMemory = null;
+$handler = set_error_handler('var_dump');
+$handler = is_array($handler) ? $handler[0] : null;
+restore_error_handler();
+if (!$handler instanceof self) {
+return;
+}
+if ($exit = null === $error) {
+$error = error_get_last();
+}
+try {
+while (self::$stackedErrorLevels) {
+static::unstackErrors();
+}
+} catch (\Exception $exception) {
+} catch (\Throwable $exception) {
+}
+if ($error && $error['type'] &= E_PARSE | E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR) {
+$handler->throwAt(0, true);
+$trace = isset($error['backtrace']) ? $error['backtrace'] : null;
+if (0 === strpos($error['message'],'Allowed memory') || 0 === strpos($error['message'],'Out of memory')) {
+$exception = new OutOfMemoryException($handler->levels[$error['type']].': '.$error['message'], 0, $error['type'], $error['file'], $error['line'], 2, false, $trace);
+} else {
+$exception = new FatalErrorException($handler->levels[$error['type']].': '.$error['message'], 0, $error['type'], $error['file'], $error['line'], 2, true, $trace);
+}
+}
+try {
+if (isset($exception)) {
+self::$exitCode = 255;
+$handler->handleException($exception, $error);
+}
+} catch (FatalErrorException $e) {
+}
+if ($exit && self::$exitCode) {
+$exitCode = self::$exitCode;
+register_shutdown_function('register_shutdown_function', function () use ($exitCode) { exit($exitCode); });
+}
+}
+public static function stackErrors()
+{
+self::$stackedErrorLevels[] = error_reporting(error_reporting() | E_PARSE | E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR);
+}
+public static function unstackErrors()
+{
+$level = array_pop(self::$stackedErrorLevels);
+if (null !== $level) {
+$errorReportingLevel = error_reporting($level);
+if ($errorReportingLevel !== ($level | E_PARSE | E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR)) {
+error_reporting($errorReportingLevel);
+}
+}
+if (empty(self::$stackedErrorLevels)) {
+$errors = self::$stackedErrors;
+self::$stackedErrors = array();
+foreach ($errors as $error) {
+$error[0]->log($error[1], $error[2], $error[3]);
+}
+}
+}
+protected function getFatalErrorHandlers()
+{
+return array(
+new UndefinedFunctionFatalErrorHandler(),
+new UndefinedMethodFatalErrorHandler(),
+new ClassNotFoundFatalErrorHandler(),
+);
+}
+}
+}
 namespace Symfony\Component\DependencyInjection
 {
 interface ContainerAwareInterface
@@ -3021,14 +3465,14 @@ unset($this->privates[$id]);
 public function has($id)
 {
 for ($i = 2;;) {
+if (isset($this->privates[$id])) {
+@trigger_error(sprintf('Checking for the existence of the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
+}
 if ('service_container'=== $id
 || isset($this->aliases[$id])
 || isset($this->services[$id])
 ) {
 return true;
-}
-if (isset($this->privates[$id])) {
-@trigger_error(sprintf('Checking for the existence of the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
 }
 if (isset($this->methodMap[$id])) {
 return true;
@@ -3047,6 +3491,9 @@ return false;
 public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
 {
 for ($i = 2;;) {
+if (isset($this->privates[$id])) {
+@trigger_error(sprintf('Requesting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
+}
 if ('service_container'=== $id) {
 return $this;
 }
@@ -3081,9 +3528,6 @@ $alternatives[] = $knownId;
 throw new ServiceNotFoundException($id, null, null, $alternatives);
 }
 return;
-}
-if (isset($this->privates[$id])) {
-@trigger_error(sprintf('Requesting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
 }
 $this->loading[$id] = true;
 try {
@@ -5050,11 +5494,11 @@ namespace
 {
 class Twig_Environment
 {
-const VERSION ='1.33.2';
-const VERSION_ID = 13302;
+const VERSION ='1.34.3';
+const VERSION_ID = 13403;
 const MAJOR_VERSION = 1;
-const MINOR_VERSION = 33;
-const RELEASE_VERSION = 1;
+const MINOR_VERSION = 34;
+const RELEASE_VERSION = 3;
 const EXTRA_VERSION ='';
 protected $charset;
 protected $loader;
@@ -5274,7 +5718,7 @@ return $this->loadedTemplates[$cls] = new $cls($this);
 }
 public function createTemplate($template)
 {
-$name = sprintf('__string_template__%s', hash('sha256', uniqid(mt_rand(), true), false));
+$name = sprintf('__string_template__%s', hash('sha256', $template, false));
 $loader = new Twig_Loader_Chain(array(
 new Twig_Loader_Array(array($name => $template)),
 $current = $this->getLoader(),
@@ -5417,7 +5861,7 @@ throw new Twig_Error_Syntax(sprintf('An exception has been thrown during the com
 }
 public function setLoader(Twig_LoaderInterface $loader)
 {
-if (!$loader instanceof Twig_SourceContextLoaderInterface && 0 !== strpos(get_class($loader),'Mock_Twig_LoaderInterface')) {
+if (!$loader instanceof Twig_SourceContextLoaderInterface && 0 !== strpos(get_class($loader),'Mock_')) {
 @trigger_error(sprintf('Twig loader "%s" should implement Twig_SourceContextLoaderInterface since version 1.27.', get_class($loader)), E_USER_DEPRECATED);
 }
 $this->loader = $loader;
@@ -5453,6 +5897,10 @@ $extension->initRuntime($this);
 public function hasExtension($class)
 {
 $class = ltrim($class,'\\');
+if (!isset($this->extensionsByClass[$class]) && class_exists($class, false)) {
+$class = new ReflectionClass($class);
+$class = $class->name;
+}
 if (isset($this->extensions[$class])) {
 if ($class !== get_class($this->extensions[$class])) {
 @trigger_error(sprintf('Referencing the "%s" extension by its name (defined by getName()) is deprecated since 1.26 and will be removed in Twig 2.0. Use the Fully Qualified Extension Class Name instead.', $class), E_USER_DEPRECATED);
@@ -5468,6 +5916,10 @@ $this->runtimeLoaders[] = $loader;
 public function getExtension($class)
 {
 $class = ltrim($class,'\\');
+if (!isset($this->extensionsByClass[$class]) && class_exists($class, false)) {
+$class = new ReflectionClass($class);
+$class = $class->name;
+}
 if (isset($this->extensions[$class])) {
 if ($class !== get_class($this->extensions[$class])) {
 @trigger_error(sprintf('Referencing the "%s" extension by its name (defined by getName()) is deprecated since 1.26 and will be removed in Twig 2.0. Use the Fully Qualified Extension Class Name instead.', $class), E_USER_DEPRECATED);
@@ -5515,6 +5967,10 @@ if ($this->extensionInitialized) {
 throw new LogicException(sprintf('Unable to remove extension "%s" as extensions have already been initialized.', $name));
 }
 $class = ltrim($name,'\\');
+if (!isset($this->extensionsByClass[$class]) && class_exists($class, false)) {
+$class = new ReflectionClass($class);
+$class = $class->name;
+}
 if (isset($this->extensions[$class])) {
 if ($class !== get_class($this->extensions[$class])) {
 @trigger_error(sprintf('Referencing the "%s" extension by its name (defined by getName()) is deprecated since 1.26 and will be removed in Twig 2.0. Use the Fully Qualified Extension Class Name instead.', $class), E_USER_DEPRECATED);
@@ -5871,6 +6327,7 @@ $this->baseTemplateClass,
 $this->optionsHash = implode(':', $hashParts);
 }
 }
+class_alias('Twig_Environment','Twig\Environment', false);
 }
 namespace
 {
@@ -5886,6 +6343,8 @@ public function getOperators();
 public function getGlobals();
 public function getName();
 }
+class_alias('Twig_ExtensionInterface','Twig\Extension\ExtensionInterface', false);
+class_exists('Twig_Environment');
 }
 namespace
 {
@@ -5927,11 +6386,13 @@ public function getName()
 return get_class($this);
 }
 }
+class_alias('Twig_Extension','Twig\Extension\AbstractExtension', false);
+class_exists('Twig_Environment');
 }
 namespace
 {
 if (!defined('ENT_SUBSTITUTE')) {
-define('ENT_SUBSTITUTE', 0);
+define('ENT_SUBSTITUTE', 8);
 }
 class Twig_Extension_Core extends Twig_Extension
 {
@@ -6450,15 +6911,8 @@ $charset = $env->getCharset();
 }
 switch ($strategy) {
 case'html':
-static $htmlspecialcharsCharsets;
-if (null === $htmlspecialcharsCharsets) {
-if (defined('HHVM_VERSION')) {
-$htmlspecialcharsCharsets = array('utf-8'=> true,'UTF-8'=> true);
-} else {
-$htmlspecialcharsCharsets = array('ISO-8859-1'=> true,'ISO8859-1'=> true,'ISO-8859-15'=> true,'ISO8859-15'=> true,'utf-8'=> true,'UTF-8'=> true,'CP866'=> true,'IBM866'=> true,'866'=> true,'CP1251'=> true,'WINDOWS-1251'=> true,'WIN-1251'=> true,'1251'=> true,'CP1252'=> true,'WINDOWS-1252'=> true,'1252'=> true,'KOI8-R'=> true,'KOI8-RU'=> true,'KOI8R'=> true,'BIG5'=> true,'950'=> true,'GB2312'=> true,'936'=> true,'BIG5-HKSCS'=> true,'SHIFT_JIS'=> true,'SJIS'=> true,'932'=> true,'EUC-JP'=> true,'EUCJP'=> true,'ISO8859-5'=> true,'ISO-8859-5'=> true,'MACROMAN'=> true,
+static $htmlspecialcharsCharsets = array('ISO-8859-1'=> true,'ISO8859-1'=> true,'ISO-8859-15'=> true,'ISO8859-15'=> true,'utf-8'=> true,'UTF-8'=> true,'CP866'=> true,'IBM866'=> true,'866'=> true,'CP1251'=> true,'WINDOWS-1251'=> true,'WIN-1251'=> true,'1251'=> true,'CP1252'=> true,'WINDOWS-1252'=> true,'1252'=> true,'KOI8-R'=> true,'KOI8-RU'=> true,'KOI8R'=> true,'BIG5'=> true,'950'=> true,'GB2312'=> true,'936'=> true,'BIG5-HKSCS'=> true,'SHIFT_JIS'=> true,'SJIS'=> true,'932'=> true,'EUC-JP'=> true,'EUCJP'=> true,'ISO8859-5'=> true,'ISO-8859-5'=> true,'MACROMAN'=> true,
 );
-}
-}
 if (isset($htmlspecialcharsCharsets[$charset])) {
 return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 }
@@ -6602,13 +7056,19 @@ return sprintf('&#x%s;', $hex);
 if (function_exists('mb_get_info')) {
 function twig_length_filter(Twig_Environment $env, $thing)
 {
+if (null === $thing) {
+return 0;
+}
 if (is_scalar($thing)) {
 return mb_strlen($thing, $env->getCharset());
 }
 if (is_object($thing) && method_exists($thing,'__toString') && !$thing instanceof \Countable) {
 return mb_strlen((string) $thing, $env->getCharset());
 }
+if ($thing instanceof \Countable || is_array($thing)) {
 return count($thing);
+}
+return 1;
 }
 function twig_upper_filter(Twig_Environment $env, $string)
 {
@@ -6642,13 +7102,19 @@ return ucfirst(strtolower($string));
 else {
 function twig_length_filter(Twig_Environment $env, $thing)
 {
+if (null === $thing) {
+return 0;
+}
 if (is_scalar($thing)) {
 return strlen($thing);
 }
 if (is_object($thing) && method_exists($thing,'__toString') && !$thing instanceof \Countable) {
 return strlen((string) $thing);
 }
+if ($thing instanceof \Countable || is_array($thing)) {
 return count($thing);
+}
+return 1;
 }
 function twig_title_string_filter(Twig_Environment $env, $string)
 {
@@ -6766,6 +7232,7 @@ array_fill(0, $fillCount, $fill)
 }
 return $result;
 }
+class_alias('Twig_Extension_Core','Twig\Extension\CoreExtension', false);
 }
 namespace
 {
@@ -6821,6 +7288,7 @@ function twig_raw_filter($string)
 {
 return $string;
 }
+class_alias('Twig_Extension_Escaper','Twig\Extension\EscaperExtension', false);
 }
 namespace
 {
@@ -6840,6 +7308,7 @@ public function getName()
 return'optimizer';
 }
 }
+class_alias('Twig_Extension_Optimizer','Twig\Extension\OptimizerExtension', false);
 }
 namespace
 {
@@ -6849,6 +7318,7 @@ public function getSource($name);
 public function getCacheKey($name);
 public function isFresh($name, $time);
 }
+class_alias('Twig_LoaderInterface','Twig\Loader\LoaderInterface', false);
 }
 namespace
 {
@@ -6870,6 +7340,7 @@ public function count()
 return function_exists('mb_get_info') ? mb_strlen($this->content, $this->charset) : strlen($this->content);
 }
 }
+class_alias('Twig_Markup','Twig\Markup', false);
 }
 namespace
 {
@@ -7279,6 +7750,7 @@ return $ret ===''?'': new Twig_Markup($ret, $this->env->getCharset());
 return $ret;
 }
 }
+class_alias('Twig_Template','Twig\Template', false);
 }
 namespace Monolog\Formatter
 {
@@ -8053,6 +8525,21 @@ return call_user_func_array(array($this, $genericMethod), $args);
 }
 throw new \BadMethodCallException('Call to undefined method '. get_class($this) .'::'. $method .'()');
 }
+}
+}
+namespace Psr\Log
+{
+interface LoggerInterface
+{
+public function emergency($message, array $context = array());
+public function alert($message, array $context = array());
+public function critical($message, array $context = array());
+public function error($message, array $context = array());
+public function warning($message, array $context = array());
+public function notice($message, array $context = array());
+public function info($message, array $context = array());
+public function debug($message, array $context = array());
+public function log($level, $message, array $context = array());
 }
 }
 namespace Monolog

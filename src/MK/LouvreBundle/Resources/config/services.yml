@@ -5,14 +5,13 @@ services:
     mk_louvre.tarif:
         class: MK\LouvreBundle\CalculTarif\MKTarif
 
+    mk_louvre.limit:
+        class: MK\LouvreBundle\Billet\MKLimit
+
     mk_louvre.billet:
         class: MK\LouvreBundle\Billet\MKBillet
 
 
-    mk_louvre.validator.blocage:
-        class: MK\LouvreBundle\Validator\BlocageValidator
-        arguments: ["@request_stack", "@doctrine.orm.entity_manager"]        
-        tags:
-            - { name: validator.constraint_validator, alias: mk_louvre_blocage }
+
 
  

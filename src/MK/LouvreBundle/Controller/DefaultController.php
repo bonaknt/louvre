@@ -17,51 +17,58 @@ use Symfony\component\HttpFoundation\Session\Session;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
-    {
-        return $this->render('MKLouvreBundle:Default:index.html.twig');
-    }
 
     public function reservationAction(Request $request)
     {
 
 	    $reservation = new Reservation();
 
-
 	    $form = $this->get('form.factory')->create(ReservationType::class, $reservation);
 	      		
-
 	    $form->handleRequest($request);
 
 	    if ($form->isSubmitted() && $form->isValid()) {
 
-	      $reference = $this->container->get('mk_louvre.reference');
-	      $session = new Session();
+			//appel du service billet pour bloquer les reservations billet journée de la date du jour après 14h, service limitation nombre de billet et service reference
+			$blocageBillet = $this->container->get('mk_louvre.billet');
+			$limite = $this->container->get('mk_louvre.limit');
+	    	$reference = $this->container->get('mk_louvre.reference');
 
-	      $session->set('dateReservation', $reservation->getDtReservation());
-	      $session->set('typeBillet', $reservation->getTpBillet());
+	    	//appel de la session
+			$session = new Session();
 
-	      $datetime = new \DateTime();
-
-	      $blocageBillet = $this->container->get('mk_louvre.billet');
-
-	      $jour = $session->get('dateReservation')->format('j');
-	      $mois = $session->get('dateReservation')->format('m');
-	      $annee = $session->get('dateReservation')->format('Y');
-
-	      if ($blocageBillet->billet($jour, $mois, $annee) == 1){
-	      	$session->clear();
-	      	$session->getFlashBag()->add('errors', 'Erreur billet journée !');
-	      	return $this->redirectToRoute('mk_louvre_inscription');
-	      }
-	      else{
-	      	$session->set('email', $reservation->getEmail());
+			//insertion élément en session
 			$session->set('nbBillet', $reservation->getNbBillet());
-			$session->set('reference', $reference->generateur());
+			$session->set('dateReservation', $reservation->getDtReservation());
+			$session->set('typeBillet', $reservation->getTpBillet());
 
-			return $this->redirectToRoute('mk_louvre_ticket');
+			
+			//condition pour limitation nombre de billet
+			if ($limite->limit($this->getDoctrine()->getManager()) == 1){
+				$session->clear();
+				$session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
+				return $this->redirectToRoute('mk_louvre_reservation');
 
-	      }      
+			}
+
+			$jour = $session->get('dateReservation')->format('j');
+			$mois = $session->get('dateReservation')->format('m');
+			$annee = $session->get('dateReservation')->format('Y');
+
+			//condition pour bloquer les reservations de la date du jour après 14h
+			if ($blocageBillet->billet($jour, $mois, $annee) == 1){
+				$session->clear();
+				$session->getFlashBag()->add('errors', 'Erreur impossible de prendre un billet journée il est plus de 14h');
+				return $this->redirectToRoute('mk_louvre_reservation');
+			}
+			else{
+				$session->set('email', $reservation->getEmail());
+
+				$session->set('reference', $reference->generateur());
+
+				return $this->redirectToRoute('mk_louvre_ticket');
+
+			}      
 	    }
 
         return $this->render('MKLouvreBundle:Default:reservation.html.twig', array(
@@ -70,18 +77,18 @@ class DefaultController extends Controller
 	    ));
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function ticketAction(Request $request)
     {
-
+    	//appel de l'entité de reservation
 	    $reservation = new Reservation();
 
+	    //appel de la session
 	    $session = new Session();
-
 
     	$i = 0;
 
+    	//boucle pour le nombre de formulaire que le nombre de billet demandé
 	    while ($i != $session->get('nbBillet')){
 	    	$ticket = new Ticket();
 	    	$ticket->setReservation($reservation);
@@ -98,6 +105,8 @@ class DefaultController extends Controller
  
 
 	    $tickets = $reservation->getTickets();
+
+
 	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
 
 	      $session = new Session();
@@ -122,9 +131,13 @@ class DefaultController extends Controller
 
 	    $session = new Session();
 
+	    //Service calcul du tarif des personnes
 	    $calculTarif = $this->container->get('mk_louvre.tarif');
 
 	    $calculTarif->tarif();
+
+	    //Boucle pour récupérer le prix total
+
 	    $prix = 0;
 	    foreach ($session->get('tickets') as $tickets) {
 	    	$tickets->getPrix();
@@ -154,10 +167,13 @@ class DefaultController extends Controller
 
     	$prix = $session->get('prix');
 
+
+
         if ($request->isMethod('POST')) {
             $token = $request->request->get('stripeToken');
 
-            //dump($reservation); die();
+
+            //insertion des informations en BDD
             $reservation->setDtReservation($session->get('dateReservation'));
             $reservation->setTpBillet($session->get('typeBillet'));
             $reservation->setNbBillet($session->get('nbBillet'));
@@ -180,13 +196,12 @@ class DefaultController extends Controller
             $em->persist($reservation);
             $em->flush();
 
+            //Boucle pour récupérer le prix total
+
+            $prixTotal = 0;
            	foreach ($session->get('tickets') as $tickets) {
 		    	$tickets->getPrix();
-		    	$prix += $tickets->getPrix();
-		    	if ($session->get('typeBillet') == 2)
-		    	{
-		    		$tPrix = $prix / 2;
-		    	}
+		    	$prixTotal += $tickets->getPrix();
 		    }
 
 
@@ -197,7 +212,7 @@ class DefaultController extends Controller
 						'nombre_billet'	 	 =>			$session->get('nbBillet'),
 						'reference'		 	 =>			$session->get('reference'),
 						'nom'				 =>			$session->get('tickets'),
-	                	'total'				 => 		$tPrix,
+	                	'total'				 => 		$prixTotal,
             ])->getContent();
 
 	        //  Envoie d'email
@@ -212,30 +227,6 @@ class DefaultController extends Controller
 	        //envoi du message
 	        $this->get('mailer')->send($message);
 
-/*            $message = \Swift_Message::newInstance()
-	        ->setSubject('Réservation de billet')
-	        ->setFrom('m.konatedev@gmail.com')
-	        ->setTo($session->get('email'))
-	        ->setBody(
-	            $this->renderView(
-	                'MKLouvreBundle:Default:email.html.twig',
-	                array(
-
-						'email' 			 => 		$session->get('email'),
-						'date_reservation' 	 => 		$session->get('dateReservation'),
-						'type_billet'		 =>			$session->get('typeBillet'),
-						'nombre_billet'	 	 =>			$session->get('nbBillet'),
-						'reference'		 	 =>			$session->get('reference'),
-						'nom'				 =>			$session->get('tickets'),
-	                	'total'				 => 		$prix,
-
-	                	), 'text/html'
-	            	)
-	        	)
-	    	;
-	    	$this->get('mailer')->send($message);
-
-*/
             \Stripe\Stripe::setApiKey("sk_test_3Rhg0Hiy8Gw3VMaOIrrbE4cE");
             \Stripe\Charge::create(array(
               "amount" => $prix * 100,
@@ -246,7 +237,7 @@ class DefaultController extends Controller
 
             $session->getFlashBag()->add('success', 'Paiement accépté !');
             $session->clear();
-            return $this->redirectToRoute('mk_louvre_homepage');
+            return $this->redirectToRoute('mk_louvre_reservation');
         }
 
         return $this->render('MKLouvreBundle:Default:paiement.html.twig', array(
@@ -259,6 +250,6 @@ class DefaultController extends Controller
 
     public function redirection()
     {
-	    return $this->redirectToRoute('mk_louvre_inscription');
+	    return $this->redirectToRoute('mk_louvre_reservation');
     }
 }
