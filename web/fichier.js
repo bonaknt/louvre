@@ -24,32 +24,6 @@
     $.datepicker.setDefaults($.datepicker.regional['fr']);
         //var dateJour = new Date();
 
-
-          
-
-          $( ".datepicker" ).datepicker({
-
-          dateFormat: 'yy/mm/dd',
-
-          beforeShowDay: function (date, inst) {
-              var today = new Date();
-
-              today = Date.parse(today.getMonth()+1+'/'+today.getDate()+'/'+today.getFullYear());
-
-              var selDate = Date.parse(date);
-
-              if (date.getDay() == 0 || date.getDay() == 2 || date.getMonth() == 11 && date.getDate() == 25 || date.getMonth() == 10 && date.getDate() == 1 || date.getMonth() == 4 && date.getDate() == 1 || selDate < today) { // La semaine commence à 0 = Dimanche
-                  $('.datepicker').val('');
-                  $(inst).datepicker('show');
-                  return [false, ''];
-              } 
-              else {
-                  return [true, ''];
-              }
-
-            }
-        });
-
         $( ".datepicker1").datepicker({
         dateFormat: 'yy/mm/dd',
       changeMonth: true,

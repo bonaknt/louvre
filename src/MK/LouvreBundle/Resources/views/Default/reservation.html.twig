@@ -29,7 +29,7 @@
 
     <div class="col-sm-offset-2 col-sm-8">
       {# Génération de l'input. #}
-      {{ form_widget(form.email, {'attr': {'class': 'form-control', 'name' : 'email'}}) }}
+      {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
     </div>
   </div>
  
@@ -42,19 +42,19 @@
 
     <div class="col-sm-8">
       {# Génération de l'input. #}
-      {{ form_widget(form.dtReservation, {'attr': {'class': 'datepicker', 'name' : 'dtReservation'}}) }}
+      {{ form_widget(form.dtReservation, {'attr': {'class': 'datepicker'}}) }}
     </div>
   </div>
   <div class="form-group">
     {# Génération du label. #}
-   	{{ form_label(form.tpBillet, "Type de billet", {'label_attr': {'class': 'col-sm-3', 'name' : 'dtReservation'}}) }}
+   	{{ form_label(form.tpBillet, "Type de billet", {'label_attr': {'class': 'col-sm-3'}}) }}
 
     {# Affichage des erreurs pour ce champ précis. #}
     {{ form_errors(form.tpBillet) }}
 
     <div class="col-sm-8">
       {# Génération de l'input. #}
-      {{ form_widget(form.tpBillet, {'attr': {'class': 'form-control', 'name' : 'tpBillet' }}) }}
+      {{ form_widget(form.tpBillet, {'attr': {'class': 'form-control'}}) }}
     </div>
   </div>
 
@@ -67,7 +67,7 @@
 
     <div class="col-sm-8">
       {# Génération de l'input. #}
-      {{ form_widget(form.nbBillet, {'attr': {'class': 'form-control', 'name' : 'nbBillet'}}) }}
+      {{ form_widget(form.nbBillet, {'attr': {'class': 'form-control'}}) }}
     </div>
   </div>
 

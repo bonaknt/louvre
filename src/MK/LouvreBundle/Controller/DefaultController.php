@@ -29,6 +29,9 @@ class DefaultController extends Controller
 
 	    if ($form->isSubmitted() && $form->isValid()) {
 
+	    	$em 			= $this->getDoctrine()->getManager();
+	    	$redirection    = $this->redirectToRoute('mk_louvre_reservation');
+
 			//appel du service billet pour bloquer les reservations billet journée de la date du jour après 14h, service limitation nombre de billet et service reference
 			$blocageBillet = $this->container->get('mk_louvre.billet');
 			$limite = $this->container->get('mk_louvre.limit');
@@ -43,32 +46,20 @@ class DefaultController extends Controller
 			$session->set('typeBillet', $reservation->getTpBillet());
 
 			
-			//condition pour limitation nombre de billet
-			if ($limite->limit($this->getDoctrine()->getManager()) == 1){
-				$session->clear();
-				$session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
-				return $this->redirectToRoute('mk_louvre_reservation');
+			//Service limitation de billet
+			$limite->limit($em, $redirection);
 
-			}
 
-			$jour = $session->get('dateReservation')->format('j');
-			$mois = $session->get('dateReservation')->format('m');
-			$annee = $session->get('dateReservation')->format('Y');
+			//service bloquer les reservations de la date du jour après 14h
+			$blocageBillet->billet($redirection);
 
-			//condition pour bloquer les reservations de la date du jour après 14h
-			if ($blocageBillet->billet($jour, $mois, $annee) == 1){
-				$session->clear();
-				$session->getFlashBag()->add('errors', 'Erreur impossible de prendre un billet journée il est plus de 14h');
-				return $this->redirectToRoute('mk_louvre_reservation');
-			}
-			else{
-				$session->set('email', $reservation->getEmail());
+			$session->set('email', $reservation->getEmail());
 
-				$session->set('reference', $reference->generateur());
+			$session->set('reference', $reference->generateur());
 
-				return $this->redirectToRoute('mk_louvre_ticket');
+			return $this->redirectToRoute('mk_louvre_ticket');
 
-			}      
+			      
 	    }
 
         return $this->render('MKLouvreBundle:Default:reservation.html.twig', array(
@@ -204,28 +195,21 @@ class DefaultController extends Controller
 		    	$prixTotal += $tickets->getPrix();
 		    }
 
+		    $session->set('prixTotal', $prixTotal);
 
-	    	$mailBodyHTML = $this->render('MKLouvreBundle:Default:email.html.twig', [
-						'email' 			 => 		$session->get('email'),
-						'date_reservation' 	 => 		$session->get('dateReservation'),
-						'type_billet'		 =>			$session->get('typeBillet'),
-						'nombre_billet'	 	 =>			$session->get('nbBillet'),
-						'reference'		 	 =>			$session->get('reference'),
-						'nom'				 =>			$session->get('tickets'),
-	                	'total'				 => 		$prixTotal,
-            ])->getContent();
+		    $mailer = $this->get('mailer');
+		    $mailBodyHTML = $this->render('MKLouvreBundle:Default:email.html.twig', [
+	        'email'               =>     $session->get('email'),
+	        'date_reservation'    =>     $session->get('dateReservation'),
+	        'type_billet'         =>     $session->get('typeBillet'),
+	        'nombre_billet'       =>     $session->get('nbBillet'),
+	        'reference'           =>     $session->get('reference'),
+	        'nom'                 =>     $session->get('tickets'),
+	        'total'               =>     $session->get('prixTotal'),
+	        ])->getContent();
 
-	        //  Envoie d'email
-	        $message = \Swift_Message::newInstance();
-	        $message->setSubject("Votre réservation pour le musée du Louvre");
-	        $message->setFrom('confirmation@museedulouvre.com');
-	        $message->setTo($session->get('email'));
-	        // pour envoyer le message en HTML
-	        $message->setBody(
-	            $mailBodyHTML,
-	            'text/html');
-	        //envoi du message
-	        $this->get('mailer')->send($message);
+		    $email = $this->container->get('mk_louvre.email');
+		    $email->sendEmail($mailBodyHTML, $mailer);
 
             \Stripe\Stripe::setApiKey("sk_test_3Rhg0Hiy8Gw3VMaOIrrbE4cE");
             \Stripe\Charge::create(array(
@@ -245,11 +229,5 @@ class DefaultController extends Controller
 
 	      
 	    ));
-    }
-
-
-    public function redirection()
-    {
-	    return $this->redirectToRoute('mk_louvre_reservation');
     }
 }

@@ -10,6 +10,9 @@ services:
 
     mk_louvre.billet:
         class: MK\LouvreBundle\Billet\MKBillet
+        
+    mk_louvre.email:
+        class: MK\LouvreBundle\Email\ApplicationMailer
 
 
 

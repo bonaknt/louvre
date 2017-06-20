@@ -1,6 +1,6 @@
 <?php
 
-/* @MKLouvre/Default/email.html.twig */
+/* MKLouvreBundle:Default:email.html.twig */
 class __TwigTemplate_1699dfe7c7827010dc99a30d36fd70d1c43a8933a1ab9d4127effe56c9dc1920 extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
@@ -15,11 +15,11 @@ class __TwigTemplate_1699dfe7c7827010dc99a30d36fd70d1c43a8933a1ab9d4127effe56c9d
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_898b31b2a64914da5aa7bd53b18640226391f148659aec29c985ea48dc894dd1 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_898b31b2a64914da5aa7bd53b18640226391f148659aec29c985ea48dc894dd1->enter($__internal_898b31b2a64914da5aa7bd53b18640226391f148659aec29c985ea48dc894dd1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@MKLouvre/Default/email.html.twig"));
+        $__internal_e2c3f1a127a002b6a763e8eb8a078d1b004411eed2d71080b70e01f4c551a113 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_e2c3f1a127a002b6a763e8eb8a078d1b004411eed2d71080b70e01f4c551a113->enter($__internal_e2c3f1a127a002b6a763e8eb8a078d1b004411eed2d71080b70e01f4c551a113_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:email.html.twig"));
 
-        $__internal_a341b58688192d316f47986ed4bf940eb3cf451335f7907f4769a4653be04e94 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_a341b58688192d316f47986ed4bf940eb3cf451335f7907f4769a4653be04e94->enter($__internal_a341b58688192d316f47986ed4bf940eb3cf451335f7907f4769a4653be04e94_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@MKLouvre/Default/email.html.twig"));
+        $__internal_4ec89d44a36f867440ff59d47fa94f9c2f5a06f07ba05cf273b83cd2ba44dfe4 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_4ec89d44a36f867440ff59d47fa94f9c2f5a06f07ba05cf273b83cd2ba44dfe4->enter($__internal_4ec89d44a36f867440ff59d47fa94f9c2f5a06f07ba05cf273b83cd2ba44dfe4_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:email.html.twig"));
 
         // line 1
         echo "<h2> Commande numero : ";
@@ -148,16 +148,16 @@ $context["tickets"], "tpTarif", array()) == 4)) {
         echo "€
 ";
         
-        $__internal_898b31b2a64914da5aa7bd53b18640226391f148659aec29c985ea48dc894dd1->leave($__internal_898b31b2a64914da5aa7bd53b18640226391f148659aec29c985ea48dc894dd1_prof);
+        $__internal_e2c3f1a127a002b6a763e8eb8a078d1b004411eed2d71080b70e01f4c551a113->leave($__internal_e2c3f1a127a002b6a763e8eb8a078d1b004411eed2d71080b70e01f4c551a113_prof);
 
         
-        $__internal_a341b58688192d316f47986ed4bf940eb3cf451335f7907f4769a4653be04e94->leave($__internal_a341b58688192d316f47986ed4bf940eb3cf451335f7907f4769a4653be04e94_prof);
+        $__internal_4ec89d44a36f867440ff59d47fa94f9c2f5a06f07ba05cf273b83cd2ba44dfe4->leave($__internal_4ec89d44a36f867440ff59d47fa94f9c2f5a06f07ba05cf273b83cd2ba44dfe4_prof);
 
     }
 
     public function getTemplateName()
     {
-        return "@MKLouvre/Default/email.html.twig";
+        return "MKLouvreBundle:Default:email.html.twig";
     }
 
     public function isTraitable()
@@ -232,6 +232,6 @@ Tarif réduit
  {% endfor %}
 
 <strong>Total prix</strong> : {{total}}€
-", "@MKLouvre/Default/email.html.twig", "C:\\xampp\\htdocs\\louvre\\src\\MK\\LouvreBundle\\Resources\\views\\Default\\email.html.twig");
+", "MKLouvreBundle:Default:email.html.twig", "C:\\xampp\\htdocs\\louvre\\src\\MK\\LouvreBundle\\Resources\\views\\Default\\email.html.twig");
     }
 }

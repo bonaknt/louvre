@@ -105,18 +105,13 @@ class appTestDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBun
 
         }
 
-        // mk_louvre_homepage
+        // mk_louvre_reservation
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'mk_louvre_homepage');
+                return $this->redirect($pathinfo.'/', 'mk_louvre_reservation');
             }
 
-            return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::indexAction',  '_route' => 'mk_louvre_homepage',);
-        }
-
-        // mk_louvre_inscription
-        if ($pathinfo === '/reservation') {
-            return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::reservationAction',  '_route' => 'mk_louvre_inscription',);
+            return array (  '_controller' => 'MK\\LouvreBundle\\Controller\\DefaultController::reservationAction',  '_route' => 'mk_louvre_reservation',);
         }
 
         // mk_louvre_ticket

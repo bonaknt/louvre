@@ -12,11 +12,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends KernelTestCase
 {
 
+    private $form;
+    private $container;
+
+    public function setUp()
+    {
+        self::bootKernel();
+
+        $this->container = self::$kernel->getContainer();
+    }
 
     public function testReservation(){
 
@@ -84,21 +94,35 @@ class DefaultControllerTest extends WebTestCase
         }
 
     public function testReservationForm()
-        {
-            $client = static::createClient();
-            $crawler = $client->request('GET', 'http://localhost/louvre/web/app_dev.php/reservation');
-            $form = $crawler->selectButton('input[type=submit]')->form();
+    {
+        $date = new \DateTime('2018/07/22');
+        $result = $date->format('Y-m-d H:i:s');
 
-            
-            $form['dtReservation'] = new \DateTime('2017/07/22');
-            $form['tpBillet'] = 1;
-            $form['nbBillet'] = 2;
-            $form['email'] = 'mohamedkonate45@hotmail.fr';
+        $formData = array(
+            'email'         => 'mohamedkonate45@hotmail.fr',
+            'dtReservation' => $result,
+            'tpBillet'      => 1,
+            'nbBillet'      => 1,
+            );
 
+        $this->form = $this->container->get('form.factory');
+        $form = $this->form->create(ReservationType::class, null);
 
-            $crawler = $client->submit($form);
-     
+        $object = $formData;
 
+        // submit the data to the form directly
+        $form->submit($formData);
 
+        // test que les informations transmise au formulaire n'ont pas échoué après validation
+        $this->assertTrue($form->isSynchronized());
+
+        // vérification de la création du formView
+        $view = $form->createView();
+        $children = $view->children;
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
         }
+
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/* @MKLouvre/Default/recapitulatif.html.twig */
+/* MKLouvreBundle:Default:recapitulatif.html.twig */
 class __TwigTemplate_1e1c2f1858ccc5bdae83da2a06cf7b0aad49a5aad65b442d8d8661461823c0fe extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
@@ -8,7 +8,7 @@ class __TwigTemplate_1e1c2f1858ccc5bdae83da2a06cf7b0aad49a5aad65b442d8d866146182
         parent::__construct($env);
 
         // line 1
-        $this->parent = $this->loadTemplate("MKLouvreBundle::layout.html.twig", "@MKLouvre/Default/recapitulatif.html.twig", 1);
+        $this->parent = $this->loadTemplate("MKLouvreBundle::layout.html.twig", "MKLouvreBundle:Default:recapitulatif.html.twig", 1);
         $this->blocks = array(
             'body' => array($this, 'block_body'),
         );
@@ -21,29 +21,29 @@ class __TwigTemplate_1e1c2f1858ccc5bdae83da2a06cf7b0aad49a5aad65b442d8d866146182
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_4746651f3382513c0dc43afe265100f47a914323dd71a7d2c1e5fee5259acf51 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_4746651f3382513c0dc43afe265100f47a914323dd71a7d2c1e5fee5259acf51->enter($__internal_4746651f3382513c0dc43afe265100f47a914323dd71a7d2c1e5fee5259acf51_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@MKLouvre/Default/recapitulatif.html.twig"));
+        $__internal_b312e10dccfac17ce0cf5a9fd2d681af81b94d206cb9c52e2e67af45388c48f1 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_b312e10dccfac17ce0cf5a9fd2d681af81b94d206cb9c52e2e67af45388c48f1->enter($__internal_b312e10dccfac17ce0cf5a9fd2d681af81b94d206cb9c52e2e67af45388c48f1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:recapitulatif.html.twig"));
 
-        $__internal_74662390de42b75ba26af1a7ac37322d3a6af9f945f02dbd941756e45c56e99c = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_74662390de42b75ba26af1a7ac37322d3a6af9f945f02dbd941756e45c56e99c->enter($__internal_74662390de42b75ba26af1a7ac37322d3a6af9f945f02dbd941756e45c56e99c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@MKLouvre/Default/recapitulatif.html.twig"));
+        $__internal_ac22b4c9092909ffae17c6f12b080530fc3deb660a72722961595d4538285c3d = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_ac22b4c9092909ffae17c6f12b080530fc3deb660a72722961595d4538285c3d->enter($__internal_ac22b4c9092909ffae17c6f12b080530fc3deb660a72722961595d4538285c3d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "MKLouvreBundle:Default:recapitulatif.html.twig"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_4746651f3382513c0dc43afe265100f47a914323dd71a7d2c1e5fee5259acf51->leave($__internal_4746651f3382513c0dc43afe265100f47a914323dd71a7d2c1e5fee5259acf51_prof);
+        $__internal_b312e10dccfac17ce0cf5a9fd2d681af81b94d206cb9c52e2e67af45388c48f1->leave($__internal_b312e10dccfac17ce0cf5a9fd2d681af81b94d206cb9c52e2e67af45388c48f1_prof);
 
         
-        $__internal_74662390de42b75ba26af1a7ac37322d3a6af9f945f02dbd941756e45c56e99c->leave($__internal_74662390de42b75ba26af1a7ac37322d3a6af9f945f02dbd941756e45c56e99c_prof);
+        $__internal_ac22b4c9092909ffae17c6f12b080530fc3deb660a72722961595d4538285c3d->leave($__internal_ac22b4c9092909ffae17c6f12b080530fc3deb660a72722961595d4538285c3d_prof);
 
     }
 
     // line 3
     public function block_body($context, array $blocks = array())
     {
-        $__internal_c3d69fcd973f72aaaf9331e1f7553c6a171659978a3c3d2d2677a2dac23256ea = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_c3d69fcd973f72aaaf9331e1f7553c6a171659978a3c3d2d2677a2dac23256ea->enter($__internal_c3d69fcd973f72aaaf9331e1f7553c6a171659978a3c3d2d2677a2dac23256ea_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_166f0db8776777ebe70689a507f481383537feff2ecfefc0f3567a865db58c18 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_166f0db8776777ebe70689a507f481383537feff2ecfefc0f3567a865db58c18->enter($__internal_166f0db8776777ebe70689a507f481383537feff2ecfefc0f3567a865db58c18_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
-        $__internal_a820a53f5f1d96bb3ed2346de7a68025369010d69ca22a6bd5b3db48c93949c7 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_a820a53f5f1d96bb3ed2346de7a68025369010d69ca22a6bd5b3db48c93949c7->enter($__internal_a820a53f5f1d96bb3ed2346de7a68025369010d69ca22a6bd5b3db48c93949c7_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_6815d9a02be20d2a0ba718ecf1476a82cd6bb31b609b1a02b932e1d31bf53a26 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_6815d9a02be20d2a0ba718ecf1476a82cd6bb31b609b1a02b932e1d31bf53a26->enter($__internal_6815d9a02be20d2a0ba718ecf1476a82cd6bb31b609b1a02b932e1d31bf53a26_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
 
         // line 4
         echo "
@@ -183,16 +183,16 @@ $context["tickets"], "tpTarif", array()) == 4)) {
 </div>
 ";
         
-        $__internal_a820a53f5f1d96bb3ed2346de7a68025369010d69ca22a6bd5b3db48c93949c7->leave($__internal_a820a53f5f1d96bb3ed2346de7a68025369010d69ca22a6bd5b3db48c93949c7_prof);
+        $__internal_6815d9a02be20d2a0ba718ecf1476a82cd6bb31b609b1a02b932e1d31bf53a26->leave($__internal_6815d9a02be20d2a0ba718ecf1476a82cd6bb31b609b1a02b932e1d31bf53a26_prof);
 
         
-        $__internal_c3d69fcd973f72aaaf9331e1f7553c6a171659978a3c3d2d2677a2dac23256ea->leave($__internal_c3d69fcd973f72aaaf9331e1f7553c6a171659978a3c3d2d2677a2dac23256ea_prof);
+        $__internal_166f0db8776777ebe70689a507f481383537feff2ecfefc0f3567a865db58c18->leave($__internal_166f0db8776777ebe70689a507f481383537feff2ecfefc0f3567a865db58c18_prof);
 
     }
 
     public function getTemplateName()
     {
-        return "@MKLouvre/Default/recapitulatif.html.twig";
+        return "MKLouvreBundle:Default:recapitulatif.html.twig";
     }
 
     public function isTraitable()
@@ -279,6 +279,6 @@ Tarif réduit
     <a href=\"{{ path('mk_louvre_paiement') }}\"><input type=\"button\" id=\"bouton\" class=\"btn btn-primary\" value=\"Valider\" /></a>
 </div>
 </div>
-{% endblock %}", "@MKLouvre/Default/recapitulatif.html.twig", "C:\\xampp\\htdocs\\louvre\\src\\MK\\LouvreBundle\\Resources\\views\\Default\\recapitulatif.html.twig");
+{% endblock %}", "MKLouvreBundle:Default:recapitulatif.html.twig", "C:\\xampp\\htdocs\\louvre\\src\\MK\\LouvreBundle\\Resources\\views\\Default\\recapitulatif.html.twig");
     }
 }
