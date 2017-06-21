@@ -44,11 +44,17 @@ class DefaultController extends Controller
 			$session->set('nbBillet', $reservation->getNbBillet());
 
 
-			//Service limitation de billet
-			$limite->limit($em, $redirection);
+			//Service limitation de billet;
 
 			$session->set('dateReservation', $reservation->getDtReservation());
 			$session->set('typeBillet', $reservation->getTpBillet());
+
+			//condition pour limitation nombre de billet
+			if ($limite->limit($this->getDoctrine()->getManager()) == 1){
+				$session->clear();
+				$session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
+				return $this->redirectToRoute('mk_louvre_reservation');
+			}
 
 
 			$jour = $session->get('dateReservation')->format('j');
