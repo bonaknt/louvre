@@ -68,8 +68,14 @@ class DefaultController extends Controller
 			}
 			else{
 				$session->set('email', $reservation->getEmail());
-				$session->set('reference', $reference->generateur());
-				return $this->redirectToRoute('mk_louvre_ticket');
+				$contrainte = $this->container->get('mk_louvre.contrainte');
+				$contrainte->mailContrainte($redirection);
+
+				if(!$contrainte->mailContrainte($redirection)){
+					$session->set('reference', $reference->generateur());
+					return $this->redirectToRoute('mk_louvre_ticket');
+				}
+
 			} 
 	    }
 
@@ -110,12 +116,17 @@ class DefaultController extends Controller
 
 
 	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+	    	$session = new Session();
+	      	$session->set('tickets', $tickets);
+	      	$redirection    = $this->redirectToRoute('mk_louvre_ticket');
 
-	      $session = new Session();
-	      $session->set('tickets', $tickets);
+	      	$contrainte = $this->container->get('mk_louvre.contrainte');
+			if(!$contrainte->nameContrainte($redirection)){
+				return $this->redirectToRoute('mk_louvre_recapitulatif');
+			}
 
-	      return $this->redirectToRoute('mk_louvre_recapitulatif');
-	    }
+
+		}
 
         return $this->render('MKLouvreBundle:Default:ticket.html.twig', array(
 	      'form' => $form->createView(),

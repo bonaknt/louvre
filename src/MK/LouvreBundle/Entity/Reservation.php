@@ -4,9 +4,8 @@ namespace MK\LouvreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 /**
  * Reservation
@@ -50,6 +49,7 @@ class Reservation
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\Email(message = "Ceci n’est pas une adresse email valide")
      */
     private $email;
 
