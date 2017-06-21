@@ -4,7 +4,11 @@
 
   {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
   <h1>Formulaire de réservation</h1>
-
+  {% for flashMessage in app.session.flashbag.get('errors') %}
+      <div class="alert alert-danger" style="width:52%">
+          {{ flashMessage }}
+      </div>
+  {% endfor %}
   <hr>
 <div class="well">
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
