@@ -23,7 +23,7 @@ class TicketType extends AbstractType
         ->add('prenom',            TextType::class)
         ->add('dtNaissance',  DateType::class, array(
             'widget' => 'single_text',
-
+            'format' => 'dd/MM/yyyy',
             
             'html5' => false,
 

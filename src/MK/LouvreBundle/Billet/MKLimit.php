@@ -43,9 +43,6 @@ class MKLimit
           $session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
           return $redirection;
         }
-        else{
-          return 0;
-        }
       }
     }
 

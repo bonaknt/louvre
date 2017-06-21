@@ -26,6 +26,7 @@ class ReservationType extends AbstractType
 
     // do not render as type="date", to avoid HTML5 date pickers
     'html5' => false,
+    'format' => 'dd/MM/yyyy',
 
     // add a class that can be selected in JavaScript
     'attr' => ['id' => 'datepicker']))

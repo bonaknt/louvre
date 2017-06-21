@@ -54,6 +54,18 @@ class MKTarif
           $ticket->setTpTarif($tarif); 
           $ticket->setPrix($prix);
         }
+        else if ($difference < 12){
+          $tarif = $enfant;
+          if ($session->get('typeBillet') == 2){
+            $prix = $prixEnfant / 2; 
+            $ticket->setPrix($prix);
+            $ticket->setTpTarif($tarif);
+          }
+          else{
+            $ticket->setTpTarif($tarif); 
+            $ticket->setPrix($prixEnfant);
+          }
+        }
         else{
           $ticket->setTpTarif($tarif); 
           $ticket->setPrix($prixReduit);

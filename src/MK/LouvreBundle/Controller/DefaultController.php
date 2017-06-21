@@ -42,24 +42,29 @@ class DefaultController extends Controller
 
 			//insertion élément en session
 			$session->set('nbBillet', $reservation->getNbBillet());
-			$session->set('dateReservation', $reservation->getDtReservation());
-			$session->set('typeBillet', $reservation->getTpBillet());
 
-			
+
 			//Service limitation de billet
 			$limite->limit($em, $redirection);
 
+			$session->set('dateReservation', $reservation->getDtReservation());
+			$session->set('typeBillet', $reservation->getTpBillet());
 
-			//service bloquer les reservations de la date du jour après 14h
-			$blocageBillet->billet($redirection);
 
-			$session->set('email', $reservation->getEmail());
-
-			$session->set('reference', $reference->generateur());
-
-			return $this->redirectToRoute('mk_louvre_ticket');
-
-			      
+			$jour = $session->get('dateReservation')->format('j');
+			$mois = $session->get('dateReservation')->format('m');
+			$annee = $session->get('dateReservation')->format('Y');
+			//condition pour bloquer les reservations de la date du jour après 14h
+			if ($blocageBillet->billet($jour, $mois, $annee) == 1){
+				$session->clear();
+				$session->getFlashBag()->add('errors', 'Erreur impossible de prendre un billet journée il est plus de 14h');
+				return $this->redirectToRoute('mk_louvre_reservation');
+			}
+			else{
+				$session->set('email', $reservation->getEmail());
+				$session->set('reference', $reference->generateur());
+				return $this->redirectToRoute('mk_louvre_ticket');
+			} 
 	    }
 
         return $this->render('MKLouvreBundle:Default:reservation.html.twig', array(

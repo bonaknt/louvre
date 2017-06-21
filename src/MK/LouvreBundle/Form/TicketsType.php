@@ -23,7 +23,7 @@ class TicketsType extends AbstractType
         $builder->add('tickets', CollectionType::class, array(
             'entry_type' => TicketType::class
         ))
-        ->add('save',      SubmitType::class);
+        ->add('valider',      SubmitType::class);
     }
 
     
