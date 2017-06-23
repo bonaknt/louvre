@@ -23,6 +23,8 @@ class TicketsType extends AbstractType
         $builder->add('tickets', CollectionType::class, array(
             'entry_type' => TicketType::class,
             'constraints' => new \Symfony\Component\Validator\Constraints\Valid(),
+            'attr' => array(
+          'class' => 'tickets')
         ));
     }
 
