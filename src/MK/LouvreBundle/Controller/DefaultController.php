@@ -17,18 +17,14 @@ use Symfony\component\HttpFoundation\Session\Session;
 
 class DefaultController extends Controller
 {
-
     public function reservationAction(Request $request)
     {
 
 	    $reservation = new Reservation();
-
 	    $form = $this->get('form.factory')->create(ReservationType::class, $reservation);
 	      		
 	    $form->handleRequest($request);
-
 	    if ($form->isSubmitted() && $form->isValid()) {
-
 	    	$em 			= $this->getDoctrine()->getManager();
 	    	$redirection    = $this->redirectToRoute('mk_louvre_reservation');
 
@@ -43,45 +39,23 @@ class DefaultController extends Controller
 			//insertion élément en session
 			$session->set('nbBillet', $reservation->getNbBillet());
 
-
 			//Service limitation de billet;
-
 			$session->set('dateReservation', $reservation->getDtReservation());
 			$session->set('typeBillet', $reservation->getTpBillet());
-
 			//condition pour limitation nombre de billet
-			if ($limite->limit($this->getDoctrine()->getManager()) == 1){
-				$session->clear();
-				$session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
-				return $this->redirectToRoute('mk_louvre_reservation');
-			}
+			if (!$limite->limit($em, $redirection)){
+				//condition pour bloquer les reservations de la date du jour après 14h
+				if (!$blocageBillet->billet($redirection)){
 
-
-			$jour = $session->get('dateReservation')->format('j');
-			$mois = $session->get('dateReservation')->format('m');
-			$annee = $session->get('dateReservation')->format('Y');
-			//condition pour bloquer les reservations de la date du jour après 14h
-			if ($blocageBillet->billet($jour, $mois, $annee) == 1){
-				$session->clear();
-				$session->getFlashBag()->add('errors', 'Erreur impossible de prendre un billet journée il est plus de 14h');
-				return $this->redirectToRoute('mk_louvre_reservation');
-			}
-			else{
-				$session->set('email', $reservation->getEmail());
-				$contrainte = $this->container->get('mk_louvre.contrainte');
-				$contrainte->mailContrainte($redirection);
-
-				if(!$contrainte->mailContrainte($redirection)){
+					$session->set('email', $reservation->getEmail());
 					$session->set('reference', $reference->generateur());
 					return $this->redirectToRoute('mk_louvre_ticket');
+					
 				}
-
-			} 
+			}	 
 	    }
-
         return $this->render('MKLouvreBundle:Default:reservation.html.twig', array(
-	      'form' => $form->createView(),
-	      
+	      'form' => $form->createView(),    
 	    ));
     }
 
@@ -104,28 +78,24 @@ class DefaultController extends Controller
 		    $ticket->setTpTarif(0);
 	    	$reservation->getTickets()->add($ticket);
 	    	
-
 	    	$i++;    
 	    }
-	        	
 
+	    $reservation->setDtReservation($session->get('dateReservation'));
+	    $reservation->setEmail($session->get('email'));
+	        	
 	    $form   = $this->get('form.factory')->create(TicketsType::class, $reservation);
  
-
 	    $tickets = $reservation->getTickets();
 
-
-	    if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+	    $form->handleRequest($request);
+	    if ($form->isSubmitted() && $form->isValid()) {
 	    	$session = new Session();
 	      	$session->set('tickets', $tickets);
 	      	$redirection    = $this->redirectToRoute('mk_louvre_ticket');
-
-	      	$contrainte = $this->container->get('mk_louvre.contrainte');
-			if(!$contrainte->nameContrainte($redirection)){
-				return $this->redirectToRoute('mk_louvre_recapitulatif');
-			}
-
-
+			
+			return $this->redirectToRoute('mk_louvre_recapitulatif');
+			
 		}
 
         return $this->render('MKLouvreBundle:Default:ticket.html.twig', array(
@@ -180,11 +150,8 @@ class DefaultController extends Controller
 
     	$prix = $session->get('prix');
 
-
-
         if ($request->isMethod('POST')) {
             $token = $request->request->get('stripeToken');
-
 
             //insertion des informations en BDD
             $reservation->setDtReservation($session->get('dateReservation'));

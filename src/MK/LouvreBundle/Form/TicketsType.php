@@ -21,9 +21,9 @@ class TicketsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('tickets', CollectionType::class, array(
-            'entry_type' => TicketType::class
-        ))
-        ->add('valider',      SubmitType::class);
+            'entry_type' => TicketType::class,
+            'constraints' => new \Symfony\Component\Validator\Constraints\Valid(),
+        ));
     }
 
     

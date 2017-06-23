@@ -28,6 +28,8 @@ class Reservation
      * @var \DateTime
      *
      * @ORM\Column(name="dtReservation", type="datetime")
+     * @Assert\NotBlank(message="Ce champ ne peux pas être vide")
+     * @Assert\Date(message="Date non valide")
      */
     private $dtReservation;
 
@@ -50,6 +52,7 @@ class Reservation
      *
      * @ORM\Column(name="email", type="string", length=255)
      * @Assert\Email(message = "Ceci n’est pas une adresse email valide")
+     * @Assert\NotBlank(message="Ce champ ne peux pas être vide")
      */
     private $email;
 

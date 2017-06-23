@@ -15,11 +15,13 @@ class MKBillet
    * @param string $text
    * @return bool
    */
-  public function billet($jour, $mois, $annee)
+  public function billet($redirection)
   {
     $datetime = new \DateTime();
     $session = new Session();
-
+    $jour = $session->get('dateReservation')->format('j');
+    $mois = $session->get('dateReservation')->format('m');
+    $annee = $session->get('dateReservation')->format('Y');
     if($session->get('typeBillet') == 1){
 
       if ($datetime->format('j') == $jour){
@@ -30,7 +32,9 @@ class MKBillet
 
             if($datetime->format('H') > 13){
               
-              return 1;
+              $session->clear();
+              $session->getFlashBag()->add('errors', 'Erreur impossible de prendre un billet journée il est plus de 14h');
+              return $redirection;
             }
             else{
               return 0;

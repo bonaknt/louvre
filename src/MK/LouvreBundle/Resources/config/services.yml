@@ -14,8 +14,6 @@ services:
     mk_louvre.email:
         class: MK\LouvreBundle\Email\ApplicationMailer
         
-    mk_louvre.contrainte:
-        class: MK\LouvreBundle\Contrainte\MKContrainte
 
 
 

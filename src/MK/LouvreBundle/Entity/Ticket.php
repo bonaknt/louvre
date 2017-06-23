@@ -4,6 +4,8 @@ namespace MK\LouvreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Ticket
@@ -24,15 +26,28 @@ class Ticket
 
     /**
      * @var string
-     *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre nom doit au moins avoir une lougueur de 2 caractères",
+     *      maxMessage = "Votre nm ne peut pas avoir plus de 50 caractères"
+     * )
+     * @Assert\NotBlank(message="Ce champ ne peux pas être vide")
      */
     private $nom;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="prenom", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre prénom doit au moins avoir une lougueur de 2 caractères",
+     *      maxMessage = "Votre prénom ne peut pas avoir plus de 50 caractères"
+     * )
+     * @Assert\NotBlank(message="Ce champ ne peux pas être vide")
      */
     private $prenom;
 
@@ -40,6 +55,8 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="dtNaissance", type="datetime")
+     * @Assert\NotBlank(message="Ce champ ne peux pas être vide")
+     * @Assert\Date(message="Date non valide")
      */
     private $dtNaissance;
 

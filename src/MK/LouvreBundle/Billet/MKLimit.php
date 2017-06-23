@@ -15,7 +15,7 @@ class MKLimit
    * @param string $text
    * @return bool
    */
-  public function limit($em)
+  public function limit($em, $redirection)
   {
     $session = new Session();
     //repository de réservation
@@ -30,7 +30,9 @@ class MKLimit
         
         $lim1 = $lim + $session->get('nbBillet');
         if ($lim1 > 5){
-          return 1;
+          $session->clear();
+          $session->getFlashBag()->add('errors', 'Veuillez choisir une autre date, cette date est pleine');
+          return $redirection;
         }
         else{
           return 0;
